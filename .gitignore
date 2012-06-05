@@ -1,3 +1,4 @@
 .idea/
 *.iml
 target/
+src/main/java/com/ean/xml/client/v3/generated/
