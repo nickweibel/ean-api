@@ -9,8 +9,8 @@
     <version>1.0-snapshot</version>
 
     <properties>
-        <project.wsdlSEI>http://xml.ian.com/ean-services/ws/hotel/v3</project.wsdlSEI>
-        <project.wsdlLocation>http://xml.ian.com/ean-services/ws/hotel/v3?wsdl</project.wsdlLocation>
+        <project.wsdlSEI>http://api.ean.com/ean-services/ws/hotel/v3</project.wsdlSEI>
+        <project.wsdlLocation>http://api.ean.com/ean-services/ws/hotel/v3?wsdl</project.wsdlLocation>
     </properties>
 
     <build>
