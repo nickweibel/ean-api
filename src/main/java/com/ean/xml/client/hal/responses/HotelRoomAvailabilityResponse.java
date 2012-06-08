@@ -12,63 +12,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for HotelRoomAvailabilityResponse complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="HotelRoomAvailabilityResponse">
- *   &lt;complexContent>
- *     &lt;extension base="{http://v3.properties.wsapi.ean.com/}BaseResponse">
- *       &lt;sequence>
- *         &lt;element name="hotelId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="arrivalDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="departureDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="hotelName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="hotelAddress" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="hotelCity" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="hotelStateProvince" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="hotelCountry" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="numberOfRoomsRequested" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="checkInInstructions" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="tripAdvisorRating" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="rateKey" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="CouponInformationResponse" type="{http://v3.properties.wsapi.ean.com/}CouponInformationResponse" minOccurs="0"/>
- *         &lt;element name="HotelRoomResponse" type="{http://v3.properties.wsapi.ean.com/}HotelRoomResponse" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="HotelDetails" type="{http://v3.properties.wsapi.ean.com/}HotelDetails" minOccurs="0"/>
- *         &lt;element name="PropertyAmenities" type="{http://v3.properties.wsapi.ean.com/}PropertyAmenities" minOccurs="0"/>
- *         &lt;element name="HotelImages" type="{http://v3.properties.wsapi.ean.com/}HotelImages" minOccurs="0"/>
- *       &lt;/sequence>
- *       &lt;attribute name="size" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "HotelRoomAvailabilityResponse", propOrder = {
-    "hotelId",
-    "arrivalDate",
-    "departureDate",
-    "hotelName",
-    "hotelAddress",
-    "hotelCity",
-    "hotelStateProvince",
-    "hotelCountry",
-    "numberOfRoomsRequested",
-    "checkInInstructions",
-    "tripAdvisorRating",
-    "rateKey",
-    "couponInformationResponse",
-    "hotelRoomResponse",
-    "hotelDetails",
-    "propertyAmenities",
-    "hotelImages"
-})
 public class HotelRoomAvailabilityResponse
     extends BaseResponse
 {
@@ -85,17 +28,11 @@ public class HotelRoomAvailabilityResponse
     protected String checkInInstructions;
     protected String tripAdvisorRating;
     protected String rateKey;
-    @XmlElement(name = "CouponInformationResponse")
     protected CouponInformationResponse couponInformationResponse;
-    @XmlElement(name = "HotelRoomResponse")
     protected List<HotelRoomResponse> hotelRoomResponse;
-    @XmlElement(name = "HotelDetails")
     protected HotelDetails hotelDetails;
-    @XmlElement(name = "PropertyAmenities")
     protected PropertyAmenities propertyAmenities;
-    @XmlElement(name = "HotelImages")
     protected HotelImages hotelImages;
-    @XmlAttribute(required = true)
     protected int size;
 
     /**

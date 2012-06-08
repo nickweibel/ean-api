@@ -9,83 +9,51 @@ import com.ean.xml.client.hal.base.room.RoomGroup;
 import com.ean.xml.client.hal.base.supplier.SupplierType;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import org.joda.time.DateTime;
 
-
-/**
- * <p>Java class for HotelRoomAvailabilityRequest complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="HotelRoomAvailabilityRequest">
- *   &lt;complexContent>
- *     &lt;extension base="{http://v3.properties.wsapi.ean.com/}HotelBaseRequest">
- *       &lt;sequence>
- *         &lt;element name="hotelId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="arrivalDate" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="departureDate" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="numberOfBedRooms" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="supplierType" type="{http://v3.properties.wsapi.ean.com/}SupplierType" minOccurs="0"/>
- *         &lt;element name="rateKey" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="RoomGroup" type="{http://v3.properties.wsapi.ean.com/}RoomGroup"/>
- *         &lt;element name="rateType" type="{http://v3.properties.wsapi.ean.com/}RatePlanType" minOccurs="0"/>
- *         &lt;element name="rateCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="roomTypeCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="CouponData" type="{http://v3.properties.wsapi.ean.com/}CouponData" minOccurs="0"/>
- *         &lt;element name="includeDetails" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="multiRoomAvail" type="{http://v3.properties.wsapi.ean.com/}MultiRoomAvailType" minOccurs="0"/>
- *         &lt;element name="options" type="{http://v3.properties.wsapi.ean.com/}hotelAvailOption" maxOccurs="unbounded" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "HotelRoomAvailabilityRequest", propOrder = {
-    "hotelId",
-    "arrivalDate",
-    "departureDate",
-    "numberOfBedRooms",
-    "supplierType",
-    "rateKey",
-    "roomGroup",
-    "rateType",
-    "rateCode",
-    "roomTypeCode",
-    "couponData",
-    "includeDetails",
-    "multiRoomAvail",
-    "options"
-})
 public class HotelRoomAvailabilityRequest
     extends HotelBaseRequest
 {
+    private long hotelId;
+    private DateTime arrivalDate;
+    private DateTime departureDate;
+    private Integer numberOfBedRooms;
+    private SupplierType supplierType;
+    private String rateKey;
+    private RoomGroup roomGroup;
+    private RatePlanType rateType;
+    private String rateCode;
+    private String roomTypeCode;
+    private CouponData couponData;
+    private Boolean includeDetails;
+    private MultiRoomAvailType multiRoomAvail;
+    private List<HotelAvailOption> options;
 
-    protected long hotelId;
-    @XmlElement(required = true)
-    protected String arrivalDate;
-    @XmlElement(required = true)
-    protected String departureDate;
-    protected Integer numberOfBedRooms;
-    protected SupplierType supplierType;
-    protected String rateKey;
-    @XmlElement(name = "RoomGroup", required = true)
-    protected RoomGroup roomGroup;
-    protected RatePlanType rateType;
-    protected String rateCode;
-    protected String roomTypeCode;
-    @XmlElement(name = "CouponData")
-    protected CouponData couponData;
-    protected Boolean includeDetails;
-    protected MultiRoomAvailType multiRoomAvail;
-    protected List<HotelAvailOption> options;
+    public HotelRoomAvailabilityRequest(long hotelId, DateTime arrivalDate, DateTime departureDate, String rateKey,
+                                        RoomGroup roomGroup) {
+        this.hotelId = hotelId;
+
+        if (arrivalDate == null) {
+            this.arrivalDate = DateTime.now().plusDays(2);
+        } else {
+            this.arrivalDate = arrivalDate;
+        }
+
+        if (departureDate == null) {
+            this.departureDate = this.arrivalDate.plusDays(2);
+        } else {
+            this.departureDate = departureDate;
+        }
+
+        this.rateKey = rateKey;
+
+        if (roomGroup == null) {
+            this.roomGroup = RoomGroup.getDefaultRoomGroup();
+        } else {
+            this.roomGroup = roomGroup;
+        }
+    }
+
 
     /**
      * Gets the value of the hotelId property.
@@ -111,7 +79,7 @@ public class HotelRoomAvailabilityRequest
      *     {@link String }
      *     
      */
-    public String getArrivalDate() {
+    public DateTime getArrivalDate() {
         return arrivalDate;
     }
 
@@ -123,7 +91,7 @@ public class HotelRoomAvailabilityRequest
      *     {@link String }
      *     
      */
-    public void setArrivalDate(String value) {
+    public void setArrivalDate(DateTime value) {
         this.arrivalDate = value;
     }
 
@@ -135,7 +103,7 @@ public class HotelRoomAvailabilityRequest
      *     {@link String }
      *     
      */
-    public String getDepartureDate() {
+    public DateTime getDepartureDate() {
         return departureDate;
     }
 
@@ -147,7 +115,7 @@ public class HotelRoomAvailabilityRequest
      *     {@link String }
      *     
      */
-    public void setDepartureDate(String value) {
+    public void setDepartureDate(DateTime value) {
         this.departureDate = value;
     }
 
