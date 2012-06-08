@@ -9,61 +9,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for Room complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="Room">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="numberOfAdults" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="numberOfChildren" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="childAges" type="{http://www.w3.org/2001/XMLSchema}int" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="firstName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="lastName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="bedTypeId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="bedTypeDescription" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="numberOfBeds" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *         &lt;element name="smokingPreference" type="{http://v3.properties.wsapi.ean.com/}SmokingPreference" minOccurs="0"/>
- *         &lt;element name="roomTypeCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="rateCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="rateKey" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="roomDescription" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="chargeableRate" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Room", propOrder = {
-    "numberOfAdults",
-    "numberOfChildren",
-    "childAges",
-    "firstName",
-    "lastName",
-    "bedTypeId",
-    "bedTypeDescription",
-    "numberOfBeds",
-    "smokingPreference",
-    "roomTypeCode",
-    "rateCode",
-    "rateKey",
-    "roomDescription",
-    "chargeableRate"
-})
 public class Room {
-
     protected int numberOfAdults;
     protected Integer numberOfChildren;
-    @XmlElement(type = Integer.class)
     protected List<Integer> childAges;
     protected String firstName;
     protected String lastName;
@@ -76,6 +24,37 @@ public class Room {
     protected String rateKey;
     protected String roomDescription;
     protected Float chargeableRate;
+
+    public Room(int numberOfAdults) {
+        this.numberOfAdults = numberOfAdults;
+    }
+
+    public Room(int numberOfAdults, int numberOfChildren, int... childAges) {
+        this.numberOfAdults = numberOfAdults;
+
+        setChildData(numberOfChildren, childAges);
+    }
+
+    public Room(String firstName, String lastName, String bedTypeId, int numberOfAdults, int numberOfChildren,
+                int... childAges) {
+        this.numberOfAdults = numberOfAdults;
+
+        setChildData(numberOfChildren, childAges);
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.bedTypeId = bedTypeId;
+    }
+
+    private void setChildData(int numberOfChildren, int... childAges) {
+        this.numberOfChildren = numberOfChildren;
+
+        this.childAges = new ArrayList<Integer>();
+        for (int childAge : childAges) {
+            this.childAges.add(childAge);
+        }
+    }
+
 
     /**
      * Gets the value of the numberOfAdults property.

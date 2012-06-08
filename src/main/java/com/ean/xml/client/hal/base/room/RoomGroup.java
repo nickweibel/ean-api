@@ -3,39 +3,25 @@ package com.ean.xml.client.hal.base.room;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for RoomGroup complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="RoomGroup">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="Room" type="{http://v3.properties.wsapi.ean.com/}Room" maxOccurs="unbounded"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "RoomGroup", propOrder = {
-    "room"
-})
 public class RoomGroup {
-
-    @XmlElement(name = "Room", required = true)
     protected List<Room> room;
+
+    private RoomGroup() {
+        //Do nothing
+    }
+
+    public RoomGroup(List<Room> room) {
+        this.room = room;
+    }
+
+    public static RoomGroup getDefaultRoomGroup() {
+        RoomGroup roomGroup = new RoomGroup();
+
+        roomGroup.getRoom().add(new Room(2));
+
+        return roomGroup;
+    }
 
     /**
      * Gets the value of the room property.
