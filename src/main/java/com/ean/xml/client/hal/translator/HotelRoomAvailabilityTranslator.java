@@ -20,14 +20,14 @@ public class HotelRoomAvailabilityTranslator implements Translator
         root.addHotelId(request.getHotelId());
         root.addArrivalDate(request.getArrivalDate());
         root.addDepartureDate(request.getDepartureDate());
-        root.addRoomGroup(request.getRoomGroup());
-        root.addRateKey(request.getRateKey());
         root.addNumberOfBedRooms(request.getNumberOfBedRooms());
         root.addSupplierType(request.getSupplierType());
+        root.addRateKey(request.getRateKey());
         root.addRateCode(request.getRateCode());
         root.addRoomTypeCode(request.getRoomTypeCode());
         root.addIncludeDetails(request.isIncludeDetails());
         root.addHotelAvailOption(request.getOptions());
+        root.addRoomGroup(request.getRoomGroup());
 
         return document;
     }
@@ -42,6 +42,9 @@ public class HotelRoomAvailabilityTranslator implements Translator
         EanElement root = (EanElement) document.getRootElement();
 
         response.setCustomerSessionId(root.getCustomerSessionId());
+//        response.setEanWsError();
+
+        response.setSize(root.getSizeAttributePrimitive());
         response.setHotelId(root.getHotelId());
         response.setArrivalDate(root.getArrivalDate());
         response.setDepartureDate(root.getDepartureDate());
@@ -55,7 +58,12 @@ public class HotelRoomAvailabilityTranslator implements Translator
         response.setTripAdvisorRating(root.getTripAdvisorRating());
         response.setRateKey(root.getRateKey());
         response.getHotelRoomResponse().addAll(root.getHotelRoomResponseList());
+//        response.setHotelDetails();
+//        response.setPropertyAmenities();
+//        response.setHotelImages();
 
         return response;
     }
 }
+
+//TODO implement 4 comments above

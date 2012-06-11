@@ -1,12 +1,26 @@
 package com.ean.xml.client.hal.util;
 
+import com.ean.xml.client.hal.base.properties.CancelPolicyInfo;
 import com.ean.xml.client.hal.base.properties.CancelPolicyInfoList;
 import com.ean.xml.client.hal.base.properties.HotelAvailOption;
+import com.ean.xml.client.hal.base.properties.ValueAdd;
+import com.ean.xml.client.hal.base.properties.ValueAdds;
+import com.ean.xml.client.hal.base.rates.BaseRateInfo;
+import com.ean.xml.client.hal.base.rates.BaseRateInfoNightlyRatesPerRoom;
+import com.ean.xml.client.hal.base.rates.HotelRateInfo;
+import com.ean.xml.client.hal.base.rates.NightlyRate;
 import com.ean.xml.client.hal.base.rates.RateInfos;
+import com.ean.xml.client.hal.base.rates.RatePlanType;
+import com.ean.xml.client.hal.base.rates.surcharge.BaseRateInfoSurcharges;
+import com.ean.xml.client.hal.base.rates.surcharge.Surcharge;
+import com.ean.xml.client.hal.base.rates.surcharge.SurchargeType;
 import com.ean.xml.client.hal.base.room.BedType;
 import com.ean.xml.client.hal.base.room.BedTypes;
 import com.ean.xml.client.hal.base.room.Room;
+import com.ean.xml.client.hal.base.room.RoomAmenities;
+import com.ean.xml.client.hal.base.room.RoomAmenity;
 import com.ean.xml.client.hal.base.room.RoomGroup;
+import com.ean.xml.client.hal.base.room.RoomType;
 import com.ean.xml.client.hal.base.supplier.SupplierType;
 import com.ean.xml.client.hal.responses.HotelRoomResponse;
 import java.util.ArrayList;
@@ -23,7 +37,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 public class EanElement extends DefaultElement {
-    public DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("MM/dd/yyyy");
+    private DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("MM/dd/yyyy");
 
     // CONSTRUCTORS
     public EanElement(String name) {
@@ -43,94 +57,104 @@ public class EanElement extends DefaultElement {
     }
 
     // HELPING ELEMENT ADDS
-    public void addElementString(String targetName, String targetValue) {
+    private void addElementString(String targetName, String targetValue) {
         if (StringUtils.isNotBlank(targetValue)) {
             this.addElement(targetName).setText(targetValue);
         }
     }
 
-    public void addElementDateTime(String targetName, DateTime dateTime) {
+    private void addElementDateTime(String targetName, DateTime dateTime) {
         if (dateTime != null) {
             this.addElement(targetName).setText(dateTime.toString(DATE_FORMATTER));
         }
     }
 
-    public void addElementInteger(String targetName, Integer targetValue) {
+    private void addElementInteger(String targetName, Integer targetValue) {
         if (targetValue != null) {
             this.addElement(targetName).setText(String.valueOf(targetValue));
         }
     }
 
-    public void addElementLong(String targetName, Long targetValue) {
+    private void addElementLong(String targetName, Long targetValue) {
         if (targetValue != null) {
             this.addElement(targetName).setText(String.valueOf(targetValue));
         }
     }
 
-    public void addElementFloat(String targetName, Float targetValue) {
+    private void addElementFloat(String targetName, Float targetValue) {
         if (targetValue != null) {
             this.addElement(targetName).setText(String.valueOf(targetValue));
         }
     }
 
-    public void addElementBoolean(String targetName, Boolean targetValue) {
+    private void addElementBoolean(String targetName, Boolean targetValue) {
         if (targetValue != null && targetValue) {
             this.addElement(targetName).setText(String.valueOf(targetValue));
         }
     }
 
-    public void addElement(Element targetValue){
+    private void addElement(Element targetValue){
         if (targetValue != null) {
             this.add(targetValue);
         }
     }
 
     // HELPING ELEMENT RETRIEVAL
-    public Element getElement(String target) {
+    private Element getElement(String target) {
         return this.element(target);
     }
 
-    public String getStringValue(String target) {
+    private String getStringValue(String target) {
         Element node = this.element(target);
         return node != null ? this.getText() : null;
     }
 
-    public Integer getIntegerValue(String target) {
+    private Integer getIntegerValue(String target) {
         Element node = this.element(target);
         return (node != null) ? Integer.valueOf(node.getText()) : null;
     }
 
-    public  Float getFloatValue(String target) {
+    private  Float getFloatValue(String target) {
         Element node = this.element(target);
         return (node != null) ? Float.valueOf(node.getText()) : null;
     }
 
-    public Long getLongValue(String target) {
+    private Long getLongValue(String target) {
         Element node = this.element(target);
         return (node != null) ? Long.valueOf(node.getText()) : null;
     }
 
-    public Boolean getBooleanValue(String target) {
+    private Boolean getBooleanValue(String target) {
         Element node = this.element(target);
         return (node != null) ? Boolean.valueOf(node.getText()): null;
     }
 
-    public DateTime getDateTime(String target) {
+    private DateTime getDateTime(String target) {
         Element node = this.element(target);
         return (node != null) ? DateTime.parse(node.getText(), DATE_FORMATTER) : null;
     }
 
-    public Integer getAttributeIntegerValue(String target) {
+    private String getAttributeStringValue(String target) {
+        Attribute attribute = this.attribute(target);
+        return attribute != null ? attribute.getValue() : null;
+    }
+
+    private Integer getAttributeIntegerValue(String target) {
         Attribute attribute = this.attribute(target);
         return (attribute != null) ? Integer.valueOf(attribute.getValue()) : null;
     }
 
-    public Float getAttributeFloatValue(String target) {
+    private Long getAttributeLongValue(String target) {
+        Attribute attribute = this.attribute(target);
+        return attribute != null ? Long.valueOf(attribute.getValue()) : null;
+    }
+
+    private Float getAttributeFloatValue(String target) {
         Attribute attribute = this.attribute(target);
         return (attribute != null) ? Float.valueOf(attribute.getValue()) : null;
     }
 
-    public Boolean getAttributeBooleanValue(String target) {
+    private Boolean getAttributeBooleanValue(String target) {
         Attribute attribute = this.attribute(target);
         return (attribute != null) ? Boolean.valueOf(attribute.getValue()) : null;
     }
@@ -259,14 +283,16 @@ public class EanElement extends DefaultElement {
                 HotelRoomResponse hotelRoomResponse = new HotelRoomResponse();
 
                 hotelRoomResponse.setCancellationPolicy(node.getCancellationPolicy());
+                hotelRoomResponse.setPolicy(node.getPolicy());
                 hotelRoomResponse.setRateCode(node.getRateCode());
-                hotelRoomResponse.setRoomTypeCode(node.getRoomTypeCode());
+                hotelRoomResponse.setRoomTypeCode(node.getRoomTypeCode());;
                 hotelRoomResponse.setRateDescription(node.getRateDescription());
                 hotelRoomResponse.setRoomTypeDescription(node.getRoomTypeDescription());
                 hotelRoomResponse.setSupplierType(node.getSupplierType());
                 hotelRoomResponse.setTaxRate(node.getTaxRate());
+                hotelRoomResponse.setOtherInformation(node.getOtherInformation());
                 hotelRoomResponse.setRateChange(node.getRateChange());
-                hotelRoomResponse.setNonRefundable(node.getNonRefundable());
+                hotelRoomResponse.setNonRefundable(node.getNonRefundablePrimitive());
                 hotelRoomResponse.setGuaranteeRequired(node.getGuaranteeRequired());
                 hotelRoomResponse.setDepositRequired(node.getDepositRequired());
                 hotelRoomResponse.setImmediateChargeRequired(node.getImmediateChargeRequired());
@@ -274,14 +300,18 @@ public class EanElement extends DefaultElement {
                 hotelRoomResponse.setPropertyId(node.getPropertyId());
                 hotelRoomResponse.setPromoId(node.getPromoId());
                 hotelRoomResponse.setPromoDescription(node.getPromoDescription());
-                hotelRoomResponse.setBedTypes(node.getBedTypes());
-                hotelRoomResponse.setCancelPolicyInfoList(node.getCancelPolicyInfoList());
+                hotelRoomResponse.setPromoType(node.getPromoType());
+                hotelRoomResponse.setPromoDetailText(node.getPromoDetailText());
                 hotelRoomResponse.setSmokingPreferences(node.getSmokingPreferences());
                 hotelRoomResponse.setRateOccupancyPerRoom(node.getRateOccupancyPerRoom());
+                hotelRoomResponse.setDeepLink(node.getDeepLink());
+                hotelRoomResponse.setBedTypes(node.getBedTypes());
+                hotelRoomResponse.setCancelPolicyInfoList(node.getCancelPolicyInfoList());
+                hotelRoomResponse.setRateInfos(node.getRateInfos());
+                hotelRoomResponse.setValueAdds(node.getValueAdds());
+                hotelRoomResponse.setRoomType(node.getRoomType());
                 hotelRoomResponse.setQuotedOccupancy(node.getQuotedOccupancy());
                 hotelRoomResponse.setMinGuestAge(node.getMinGuestAge());
-                hotelRoomResponse.setRateInfos(node.getRateInfos());
-                hotelRoomResponse.setDeepLink(node.getDeepLink());
 
                 responseList.add(hotelRoomResponse);
             }
@@ -290,82 +320,102 @@ public class EanElement extends DefaultElement {
         return responseList;
     }
 
-    public String getCancellationPolicy() {
+    private String getCancellationPolicy() {
         return this.getStringValue("cancellationPolicy");
     }
 
-    public String getRateCode() {
+    private String getPolicy() {
+        return this.getStringValue("policy");
+    }
+
+    private String getRateCode() {
         return this.getStringValue("rateCode");
     }
 
-    public String getRoomTypeCode() {
+    private String getRoomTypeCode() {
         return this.getStringValue("roomTypeCode");
     }
 
-    public String getRateDescription() {
+    private String getRateDescription() {
         return this.getStringValue("rateDescription");
     }
 
-    public String getRoomTypeDescription() {
+    private String getRoomTypeDescription() {
         return this.getStringValue("roomTypeDescription");
     }
 
-    public SupplierType getSupplierType() {
+    private SupplierType getSupplierType() {
         return SupplierType.fromValue(this.getStringValue("supplierType"));
     }
 
-    public String getTaxRate() {
+    private String getTaxRate() {
         return this.getStringValue("taxRate");
     }
 
-    public boolean getRateChange() {
+    private String getOtherInformation() {
+        return this.getStringValue("otherInformation");
+    }
+
+    private boolean getRateChange() {
         Boolean rateChange = this.getBooleanValue("rateChange");
         return rateChange != null ? rateChange : false;
     }
 
-    public boolean getNonRefundable() {
-        Boolean nonRefundable = this.getBooleanValue("nonRefundable");
+    private Boolean getNonRefundable() {
+        return this.getBooleanValue("nonRefundable");
+    }
+
+    private boolean getNonRefundablePrimitive() {
+        Boolean nonRefundable = getNonRefundable();
         return nonRefundable != null ? nonRefundable : false;
     }
 
-    public boolean getGuaranteeRequired() {
+    private boolean getGuaranteeRequired() {
         Boolean guaranteeRequired = this.getBooleanValue("guaranteeRequired");
         return guaranteeRequired != null ? guaranteeRequired : false;
     }
 
-    public boolean getDepositRequired() {
+    private boolean getDepositRequired() {
         Boolean depositRequired = this.getBooleanValue("depositRequired");
         return depositRequired != null ? depositRequired : false;
     }
 
-    public boolean getImmediateChargeRequired() {
+    private boolean getImmediateChargeRequired() {
         Boolean immediateChargeRequired = this.getBooleanValue("immediateChargeRequired");
         return immediateChargeRequired != null ? immediateChargeRequired : false;
     }
 
-    public int getCurrentAllotment() {
+    private int getCurrentAllotment() {
         Integer currentAllotment = this.getIntegerValue("currentAllotment");
         return currentAllotment != null ? currentAllotment : 0;
     }
 
-    public String getPropertyId() {
+    private String getPropertyId() {
         return this.getStringValue("propertyId");
     }
 
-    public String getPromoId() {
+    private String getPromoId() {
         return this.getStringValue("promoId");
     }
 
-    public String getPromoDescription() {
+    private String getPromoDescription() {
         return this.getStringValue("promoDescription");
     }
 
-    public BedTypes getBedTypes() {
+    private String getPromoType() {
+        return this.getStringValue("promoType");
+    }
+
+    private String getPromoDetailText() {
+        return this.getStringValue("promoDetailText");
+    }
+
+    private BedTypes getBedTypes() {
         BedTypes bedTypes = new BedTypes();
         EanElement node = (EanElement) this.getElement("bedTypes");
 
         if (node != null) {
-            bedTypes.setSize(node.getAttributeIntegerValue("size"));
+            bedTypes.setSize(node.getSizeAttribute());
 
             bedTypes.getBedType().addAll(node.getBedTypeList());
         }
@@ -373,7 +423,16 @@ public class EanElement extends DefaultElement {
         return bedTypes;
     }
 
-    public List<BedType> getBedTypeList() {
+    private Integer getSizeAttribute() {
+        return this.getAttributeIntegerValue("size");
+    }
+
+    public int getSizeAttributePrimitive() {
+        Integer size = getSizeAttribute();
+        return size != null ? size : 0;
+    }
+
+    private List<BedType> getBedTypeList() {
         List<BedType> bedTypeList = new ArrayList<BedType>();
         List<EanElement> nodeList = this.elements("BedType");
 
@@ -381,8 +440,7 @@ public class EanElement extends DefaultElement {
             for (EanElement node : nodeList) {
                 BedType bedType = new BedType();
 
-                Integer id = node.getAttributeIntegerValue("id");
-                bedType.setId(id != null ? id : 0);
+                bedType.setId(node.getIdAttribute());
 
                 bedType.setDescription(node.getDescription());
 
@@ -392,40 +450,452 @@ public class EanElement extends DefaultElement {
         return bedTypeList;
     }
 
-    public String getDescription() {
+    private int getIdAttribute() {
+        Integer id = this.getAttributeIntegerValue("id");
+        return id != null ? id : 0;
+    }
+
+    private String getDescription() {
         return this.getStringValue("description");
     }
 
-    public CancelPolicyInfoList getCancelPolicyInfoList() {
-        //TODO implement
-        return null;
+    private CancelPolicyInfoList getCancelPolicyInfoList() {
+        CancelPolicyInfoList cancelPolicyInfoList = new CancelPolicyInfoList();
+        EanElement node = (EanElement) this.getElement("CancelPolicyInfoList");
+
+        if (node != null) {
+            cancelPolicyInfoList.getCancelPolicyInfo().addAll(getCancelPolicyInfo());
+        }
+
+        return cancelPolicyInfoList;
     }
 
-    public String getSmokingPreferences() {
+    private List<CancelPolicyInfo> getCancelPolicyInfo() {
+        List<CancelPolicyInfo> cancelPolicyInfoList = new ArrayList<CancelPolicyInfo>();
+        List<EanElement> nodeList = this.elements("CancelPolicyInfo");
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                CancelPolicyInfo cancelPolicyInfo = new CancelPolicyInfo();
+
+                cancelPolicyInfo.setVersionId(node.getVersionId());
+                cancelPolicyInfo.setCancelTime(node.getCancelTime());
+                cancelPolicyInfo.setStartWindowHours(node.getStartWindowHours());
+                cancelPolicyInfo.setNightCount(node.getNightCount());
+                cancelPolicyInfo.setPercent(node.getPercent());
+                cancelPolicyInfo.setCurrencyCode(node.getCurrencyCode());
+                cancelPolicyInfo.setTimeZoneDescription(node.getTimeZoneDescription());
+
+                cancelPolicyInfoList.add(cancelPolicyInfo);
+            }
+        }
+
+        return cancelPolicyInfoList;
+    }
+
+    private int getVersionId() {
+        Integer versionId = this.getIntegerValue("versionId");
+        return versionId != null ? versionId : 0;
+    }
+
+    private String getCancelTime() {
+        return this.getStringValue("cancelTime");
+    }
+
+    private String getStartWindowHours() {
+        return this.getStringValue("startWindowHours");
+    }
+
+    private int getNightCount() {
+        Integer nightCount = this.getIntegerValue("nightCount");
+        return nightCount != null ? nightCount : 0;
+    }
+
+    private String getPercent() {
+        return this.getStringValue("percent");
+    }
+
+    private String getCurrencyCode() {
+        return this.getStringValue("currencyCode");
+    }
+
+    private String getTimeZoneDescription() {
+        return this.getStringValue("timeZoneDescription");
+    }
+
+    private String getSmokingPreferences() {
         return this.getStringValue("smokingPreferences");
     }
 
-    public int getRateOccupancyPerRoom() {
+    private int getRateOccupancyPerRoom() {
         Integer rateOccupancyPerRoom = this.getIntegerValue("rateOccupancyPerRoom");
         return rateOccupancyPerRoom != null ? rateOccupancyPerRoom : 0;
     }
 
-    public int getQuotedOccupancy() {
+    private int getQuotedOccupancy() {
         Integer quotedOccupancy = this.getIntegerValue("quotedOccupancy");
         return quotedOccupancy != null ? quotedOccupancy : 0;
     }
 
-    public int getMinGuestAge() {
+    private int getMinGuestAge() {
         Integer minGuestAge = this.getIntegerValue("minGuestAge");
         return minGuestAge != null ? minGuestAge : 0;
     }
 
-    public RateInfos getRateInfos() {
-        //TODO implement
-        return null;
+    private RateInfos getRateInfos() {
+        EanElement node = (EanElement) this.getElement("RateInfos");
+        RateInfos rateInfos = new RateInfos();
+
+        if (node != null) {
+            rateInfos.setSize(node.getSize());
+
+            rateInfos.getRateInfo().addAll(node.getRateInfoList());
+        }
+
+        return rateInfos;
     }
 
-    public String getDeepLink() {
-        this.getStringValue("deepLink");
+    private Integer getSize() {
+        return this.getIntegerValue("size");
+    }
+
+    private List<HotelRateInfo> getRateInfoList() {
+        List<HotelRateInfo> hotelRateInfoList = new ArrayList<HotelRateInfo>();
+        List<EanElement> nodeList = this.elements("RateInfo");
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                HotelRateInfo hotelRateInfo = new HotelRateInfo();
+
+                hotelRateInfo.setRateChange(node.getRateChangeAttribute());
+                hotelRateInfo.setPromo(node.getPromoAttribute());
+                hotelRateInfo.setPriceBreakdown(node.getPriceBreakdownAttribute());
+
+                hotelRateInfo.setRoomGroup(node.getRoomGroup());
+                hotelRateInfo.setChargeableRateInfo(node.getChargeableRateInfo());
+                hotelRateInfo.setConvertedRateInfo(node.getConvertedRateInfo());
+
+                hotelRateInfo.setNonRefundable(node.getNonRefundable());
+                hotelRateInfo.setOnline(node.getOnline());
+                hotelRateInfo.setRatePlanType(node.getRatePlanType());
+            }
+        }
+
+        return hotelRateInfoList;
+    }
+
+    private Boolean getRateChangeAttribute() {
+        return this.getAttributeBooleanValue("rateChange");
+    }
+
+    private Boolean getPromoAttribute() {
+        return this.getAttributeBooleanValue("promo");
+    }
+    
+    private Boolean getPriceBreakdownAttribute() {
+        return this.getAttributeBooleanValue("priceBreakdown");
+    }
+
+    private RoomGroup getRoomGroup() {
+        EanElement node = (EanElement) this.element("RoomGroup");
+        RoomGroup roomGroup = null;
+
+        if (node != null) {
+            roomGroup = new RoomGroup(node.getRoomList());
+        }
+
+        return roomGroup;
+    }
+
+    private List<Room> getRoomList() {
+        List<EanElement> nodeList = this.elements("Room");
+        List<Room> roomList = new ArrayList<Room>();
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                Room room = new Room(getNumberOfAdults());
+                room.setNumberOfChildren(node.getNumberOfChildren());
+                room.getChildAges().addAll(node.getChildAges());
+
+                roomList.add(room);
+            }
+        }
+
+        return roomList;
+    }
+
+    private int getNumberOfAdults() {
+        Integer numberOfAdults = this.getIntegerValue("numberOfAdults");
+        return numberOfAdults != null ? numberOfAdults : 0;
+    }
+
+    private Integer getNumberOfChildren() {
+        return this.getIntegerValue("numberOfChildren");
+    }
+
+    private List<Integer> getChildAges() {
+        List<EanElement> nodeList = this.elements("childAges");
+        List<Integer> childAgesList = new ArrayList<Integer>();
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                if (node != null) {
+                    Integer childAges = Integer.valueOf(node.getText());
+
+                    if (childAges != null) {
+                        childAgesList.add(childAges);}
+                }
+            }
+        }
+
+        return childAgesList;
+    }
+
+    private BaseRateInfo getChargeableRateInfo() {
+        EanElement node = (EanElement) this.getElement("ChargeableRateInfo");
+        
+        return node != null ? node.getBaseRateInfo() : null;
+    }
+    
+    private BaseRateInfo getBaseRateInfo() {
+        BaseRateInfo rateInfo = new BaseRateInfo();
+
+        rateInfo.setCommissionableUsdTotal(this.getCommissionableUsdTotal());
+        rateInfo.setTotal(this.getTotal());
+        rateInfo.setSurchargeTotal(this.getSurchargeTotal());
+        rateInfo.setNightlyRateTotal(this.getNightlyRateTotal());
+        rateInfo.setAverageBaseRate(this.getAverageBaseRate());
+        rateInfo.setAverageRate(this.getAverageRate());
+        rateInfo.setMaxNightlyRate(this.getMaxNightlyRate());
+        rateInfo.setCurrencyCode(this.getCurrencyCode());
+
+        rateInfo.setNightlyRatesPerRoom(this.getNightlyRatesPerRoom());
+        rateInfo.setSurcharges(this.getSurcharges());
+        
+        return rateInfo;
+    }
+
+    private Float getCommissionableUsdTotal() {
+        return this.getFloatValue("commissionableUsdTotal");
+    }
+
+    private Float getTotal() {
+        return this.getFloatValue("total");
+    }
+
+    private Float getSurchargeTotal() {
+        return this.getFloatValue("surchargeTotal");
+    }
+
+    private Float getNightlyRateTotal() {
+        return this.getFloatValue("nightlyRateTotal");
+    }
+
+    private Float getAverageBaseRate() {
+        return this.getFloatValue("averageBaseRate");
+    }
+
+    private Float getAverageRate() {
+        return this.getFloatValue("averageRate");
+    }
+
+    private Float getMaxNightlyRate() {
+        return this.getFloatValue("maxNightlyRate");
+    }
+
+    private BaseRateInfoNightlyRatesPerRoom getNightlyRatesPerRoom() {
+        BaseRateInfoNightlyRatesPerRoom ratesPerRoom = new BaseRateInfoNightlyRatesPerRoom();
+        EanElement node = (EanElement) this.element("NightlyRatesPerRoom");
+
+        if (node != null) {
+            ratesPerRoom.setSize(node.getSizeAttributePrimitive());
+
+            ratesPerRoom.getNightlyRate().addAll(node.getNightlyRateList());
+        }
+
+        return ratesPerRoom;
+    }
+
+    private List<NightlyRate> getNightlyRateList() {
+        List<NightlyRate> nightlyRateList = new ArrayList<NightlyRate>();
+        List<EanElement> nodeList = this.elements("NightlyRate");
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                NightlyRate nightlyRate = new NightlyRate();
+
+                nightlyRate.setPromo(node.getPromoAttribute());
+                nightlyRate.setRate(node.getRate());
+                nightlyRate.setBaseRate(node.getBaseRate());
+
+                nightlyRateList.add(nightlyRate);
+            }
+        }
+
+        return nightlyRateList;
+    }
+    
+    private Float getRate() {
+        return this.getFloatValue("rate");
+    }
+    
+    private Float getBaseRate() {
+        return this.getFloatValue("baseRate");
+    }
+
+    private BaseRateInfoSurcharges getSurcharges() {
+        BaseRateInfoSurcharges surcharges = new BaseRateInfoSurcharges();
+        EanElement node = (EanElement) this.element("Surcharges");
+
+        if (node != null) {
+            surcharges.setSize(node.getSizeAttributePrimitive());
+
+            surcharges.getSurcharge().addAll(node.getSurchargeList());
+        }
+
+        return surcharges;
+    }
+
+    private List<Surcharge> getSurchargeList() {
+        List<Surcharge> surchargeList = new ArrayList<Surcharge>();
+        List<EanElement> nodeList = this.elements("Surcharge");
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                Surcharge surcharge = new Surcharge();
+
+                surcharge.setAmount(node.getAmountAttribute());
+                surcharge.setType(node.getSurchargeTypeAttribute());
+
+                surchargeList.add(surcharge);
+            }
+        }
+
+        return surchargeList;
+    }
+
+    private Float getAmountAttribute() {
+        return this.getAttributeFloatValue("amount");
+    }
+
+    private SurchargeType getSurchargeTypeAttribute() {
+        String surchargeTypeString = this.getAttributeStringValue("type");
+        return surchargeTypeString != null ? SurchargeType.fromValue(surchargeTypeString) : null;
+    }
+
+    private BaseRateInfo getConvertedRateInfo() {
+        EanElement node = (EanElement) this.element("ConvertedRateInfo");
+
+        return node.getBaseRateInfo();
+    }
+
+    private Boolean getOnline() {
+        return this.getBooleanValue("online");
+    }
+
+    private RatePlanType getRatePlanType() {
+        String ratePlanType = this.getStringValue("ratePlanType");
+        return ratePlanType != null ? RatePlanType.fromValue(ratePlanType) : null;
+    }
+
+    private ValueAdds getValueAdds() {
+        ValueAdds valueAdds = new ValueAdds();
+        EanElement node = (EanElement) this.element("ValueAdds");
+
+        if (node != null) {
+            valueAdds.setSize(node.getSizeAttribute());
+            valueAdds.getValueAdd().addAll(node.getValueAddList());
+        }
+
+        return valueAdds;
+    }
+
+    private List<ValueAdd> getValueAddList() {
+        List<ValueAdd> valueAddList = new ArrayList<ValueAdd>();
+        List<EanElement> nodeList = this.elements("ValueAdd");
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                ValueAdd valueAdd = new ValueAdd();
+
+                valueAdd.setId(node.getIdAttribute());
+                valueAdd.setDescription(node.getDescription());
+
+                valueAddList.add(valueAdd);
+            }
+        }
+
+        return valueAddList;
+    }
+
+    private RoomType getRoomType() {
+        RoomType roomType = new RoomType();
+        EanElement node = (EanElement) this.element("RoomType");
+
+        if (node != null) {
+            roomType.setRoomCode(node.getRoomCodeAttribute());
+            roomType.setRoomTypeId(node.getRoomTypeIdAttribute());
+            roomType.setDescription(node.getDescription());
+            roomType.setDescriptionLong(node.getDescriptionLong());
+            roomType.setRoomAmenities(node.getRoomAmenities());
+        }
+
+        return roomType;
+    }
+
+    private String getRoomCodeAttribute() {
+        return this.getAttributeStringValue("roomCode");
+    }
+
+    private long getRoomTypeIdAttribute() {
+        Long roomTypeId = this.getAttributeLongValue("roomTypeId");
+        return roomTypeId != null ? roomTypeId : 0;
+    }
+
+    private String getDescriptionLong() {
+        return this.getStringValue("descriptionLong");
+    }
+
+    private RoomAmenities getRoomAmenities() {
+        RoomAmenities roomAmenities = new RoomAmenities();
+        EanElement node = (EanElement) this.element("roomAmenities");
+
+        if (node != null) {
+            roomAmenities.setSize(node.getSizeAttributePrimitive());
+            roomAmenities.getRoomAmenity().addAll(node.getRoomAmenityList());
+        }
+
+        return roomAmenities;
+    }
+
+    private List<RoomAmenity> getRoomAmenityList() {
+        List<RoomAmenity> roomAmenityList = new ArrayList<RoomAmenity>();
+        List<EanElement> nodeList = this.elements("RoomAmenity");
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                RoomAmenity roomAmenity = new RoomAmenity();
+
+                roomAmenity.setAmenityId(node.getAmenityId());
+                roomAmenity.setAmenity(node.getAmenity());
+
+                roomAmenityList.add(roomAmenity);
+            }
+        }
+
+        return roomAmenityList;
+    }
+
+    private long getAmenityId() {
+        Long amenityId = this.getAttributeLongValue("amenityId");
+        return amenityId != null ? amenityId : 0;
+    }
+
+    private String getAmenity() {
+        return this.getStringValue("amenity");
+    }
+
+    private String getDeepLink() {
+        return this.getStringValue("deepLink");
     }
 }
