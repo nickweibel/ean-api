@@ -11,14 +11,18 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import org.joda.time.DateTime;
 
 public class HotelRoomAvailabilityResponse
     extends BaseResponse
 {
+    public HotelRoomAvailabilityResponse() {
+        //Do Nothing
+    }
 
     protected long hotelId;
-    protected String arrivalDate;
-    protected String departureDate;
+    protected DateTime arrivalDate;
+    protected DateTime departureDate;
     protected String hotelName;
     protected String hotelAddress;
     protected String hotelCity;
@@ -59,7 +63,7 @@ public class HotelRoomAvailabilityResponse
      *     {@link String }
      *     
      */
-    public String getArrivalDate() {
+    public DateTime getArrivalDate() {
         return arrivalDate;
     }
 
@@ -71,7 +75,7 @@ public class HotelRoomAvailabilityResponse
      *     {@link String }
      *     
      */
-    public void setArrivalDate(String value) {
+    public void setArrivalDate(DateTime value) {
         this.arrivalDate = value;
     }
 
@@ -83,7 +87,7 @@ public class HotelRoomAvailabilityResponse
      *     {@link String }
      *     
      */
-    public String getDepartureDate() {
+    public DateTime getDepartureDate() {
         return departureDate;
     }
 
@@ -95,7 +99,7 @@ public class HotelRoomAvailabilityResponse
      *     {@link String }
      *     
      */
-    public void setDepartureDate(String value) {
+    public void setDepartureDate(DateTime value) {
         this.departureDate = value;
     }
 

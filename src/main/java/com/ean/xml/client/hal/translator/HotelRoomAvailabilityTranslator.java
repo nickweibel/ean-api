@@ -1,53 +1,61 @@
 package com.ean.xml.client.hal.translator;
 
-import com.ean.xml.client.hal.base.properties.HotelAvailOption;
 import com.ean.xml.client.hal.requests.HotelRoomAvailabilityRequest;
 import com.ean.xml.client.hal.responses.HotelRoomAvailabilityResponse;
-import com.ean.xml.client.hal.util.XmlParserHelper;
+import com.ean.xml.client.hal.util.EanElement;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
 
 public class HotelRoomAvailabilityTranslator implements Translator
         <HotelRoomAvailabilityRequest, Document, HotelRoomAvailabilityResponse> {
     @Override
     public Document createRequestDocument(HotelRoomAvailabilityRequest request) {
+        if (request == null) {
+            return null;
+        }
+
         Document document = DocumentHelper.createDocument();
+        EanElement root = (EanElement) document.addElement("HotelRoomAvailabilityRequest");
 
-        Element root = document.addElement("HotelRoomAvailabilityRequest");
-
-        XmlParserHelper.addElementLong(root, "hotelId", request.getHotelId());
-        XmlParserHelper.addElementString(root, "arrivalDate", request.getArrivalDate().toString(DATE_FORMATTER));
-        XmlParserHelper.addElementString(root, "departureDate", request.getDepartureDate().toString(DATE_FORMATTER));
-        XmlParserHelper.addRoomGroup(root, request.getRoomGroup());
-        XmlParserHelper.addElementString(root, "rateKey", request.getRateKey());
-
-        XmlParserHelper.addElementInteger(root, "numberOfBedRooms", request.getNumberOfBedRooms());
-        if (request.getSupplierType() != null) {
-            XmlParserHelper.addElementString(root, "supplierType", request.getSupplierType().value());
-        }
-        XmlParserHelper.addElementString(root, "rateCode", request.getRateCode());
-        XmlParserHelper.addElementString(root, "roomTypeCode", request.getRoomTypeCode());
-
-        if (request.isIncludeDetails()) {
-            root.addElement("includeDetails").setText("true");
-        }
-
-        if (request.getOptions().size() > 0) {
-            StringBuilder optionsString = new StringBuilder();
-
-            for (HotelAvailOption option : request.getOptions()) {
-                optionsString.append(option.value()).append(',');
-            }
-
-            XmlParserHelper.addElementString(root, "options", optionsString.substring(0, optionsString.length() - 1));
-        }
+        root.addHotelId(request.getHotelId());
+        root.addArrivalDate(request.getArrivalDate());
+        root.addDepartureDate(request.getDepartureDate());
+        root.addRoomGroup(request.getRoomGroup());
+        root.addRateKey(request.getRateKey());
+        root.addNumberOfBedRooms(request.getNumberOfBedRooms());
+        root.addSupplierType(request.getSupplierType());
+        root.addRateCode(request.getRateCode());
+        root.addRoomTypeCode(request.getRoomTypeCode());
+        root.addIncludeDetails(request.isIncludeDetails());
+        root.addHotelAvailOption(request.getOptions());
 
         return document;
     }
 
     @Override
-    public HotelRoomAvailabilityResponse createResponseObject(Document response) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public HotelRoomAvailabilityResponse createResponseObject(Document document) {
+        if (document == null) {
+            return null;
+        }
+
+        HotelRoomAvailabilityResponse response = new HotelRoomAvailabilityResponse();
+        EanElement root = (EanElement) document.getRootElement();
+
+        response.setCustomerSessionId(root.getCustomerSessionId());
+        response.setHotelId(root.getHotelId());
+        response.setArrivalDate(root.getArrivalDate());
+        response.setDepartureDate(root.getDepartureDate());
+        response.setHotelName(root.getHotelName());
+        response.setHotelAddress(root.getHotelAddress());
+        response.setHotelCity(root.getHotelCity());
+        response.setHotelStateProvince(root.getHotelStateProvince());
+        response.setHotelCountry(root.getHotelCountry());
+        response.setNumberOfRoomsRequested(root.getNumberOfRoomsRequested());
+        response.setCheckInInstructions(root.getCheckInInstructions());
+        response.setTripAdvisorRating(root.getTripAdvisorRating());
+        response.setRateKey(root.getRateKey());
+        response.getHotelRoomResponse().addAll(root.getHotelRoomResponseList());
+
+        return response;
     }
 }
