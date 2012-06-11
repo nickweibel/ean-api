@@ -1,10 +1,15 @@
 package com.ean.xml.client.hal.util;
 
+import com.ean.xml.client.hal.base.properties.CancelPolicyInfoList;
 import com.ean.xml.client.hal.base.properties.HotelAvailOption;
+import com.ean.xml.client.hal.base.rates.RateInfos;
+import com.ean.xml.client.hal.base.room.BedType;
+import com.ean.xml.client.hal.base.room.BedTypes;
 import com.ean.xml.client.hal.base.room.Room;
 import com.ean.xml.client.hal.base.room.RoomGroup;
 import com.ean.xml.client.hal.base.supplier.SupplierType;
 import com.ean.xml.client.hal.responses.HotelRoomResponse;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Attribute;
@@ -95,39 +100,39 @@ public class EanElement extends DefaultElement {
         return (node != null) ? Integer.valueOf(node.getText()) : null;
     }
 
-    public  float getFloatValue(String target) {
+    public  Float getFloatValue(String target) {
         Element node = this.element(target);
-        return (node != null) ? Float.valueOf(node.getText()) : -1;
+        return (node != null) ? Float.valueOf(node.getText()) : null;
     }
 
-    public long getLongValue(String target) {
+    public Long getLongValue(String target) {
         Element node = this.element(target);
-        return (node != null) ? Long.valueOf(node.getText()) : -1;
+        return (node != null) ? Long.valueOf(node.getText()) : null;
     }
 
-    public boolean getBooleanValue(String target) {
+    public Boolean getBooleanValue(String target) {
         Element node = this.element(target);
-        return (node != null) ? Boolean.valueOf(node.getText()): false;
+        return (node != null) ? Boolean.valueOf(node.getText()): null;
     }
 
     public DateTime getDateTime(String target) {
         Element node = this.element(target);
-        return (node != null) ? DateTime.parse(node.getText(), DATE_FORMATTER) : DateTime.now();
+        return (node != null) ? DateTime.parse(node.getText(), DATE_FORMATTER) : null;
     }
 
-    public int getAttributeIntegerValue(String target) {
+    public Integer getAttributeIntegerValue(String target) {
         Attribute attribute = this.attribute(target);
-        return (attribute != null) ? Integer.valueOf(attribute.getValue()) : -1;
+        return (attribute != null) ? Integer.valueOf(attribute.getValue()) : null;
     }
 
-    public float getAttributeFloatValue(String target) {
+    public Float getAttributeFloatValue(String target) {
         Attribute attribute = this.attribute(target);
-        return (attribute != null) ? Float.valueOf(attribute.getValue()) : -1;
+        return (attribute != null) ? Float.valueOf(attribute.getValue()) : null;
     }
 
-    public boolean getAttributeBooleanValue(String target) {
+    public Boolean getAttributeBooleanValue(String target) {
         Attribute attribute = this.attribute(target);
-        return (attribute != null) ? Boolean.valueOf(attribute.getValue()) : false;
+        return (attribute != null) ? Boolean.valueOf(attribute.getValue()) : null;
     }
 
     // REQUEST HELPERS
@@ -197,7 +202,8 @@ public class EanElement extends DefaultElement {
     }
 
     public long getHotelId() {
-        return this.getLongValue("hotelId");
+        Long hotelId = this.getLongValue("hotelId");
+        return hotelId != null ? hotelId : 0;
     }
 
     public DateTime getArrivalDate() {
@@ -245,17 +251,181 @@ public class EanElement extends DefaultElement {
     }
 
     public List<HotelRoomResponse> getHotelRoomResponseList() {
-        List<Element> elementList = elements("hotelRomeResponse");
-        for (Element node : elementList) {
+        List<EanElement> elementList = elements("hotelRomeResponse");
+        List<HotelRoomResponse> responseList = new ArrayList<HotelRoomResponse>();
 
+        if (elementList != null) {
+            for (EanElement node : elementList) {
+                HotelRoomResponse hotelRoomResponse = new HotelRoomResponse();
+
+                hotelRoomResponse.setCancellationPolicy(node.getCancellationPolicy());
+                hotelRoomResponse.setRateCode(node.getRateCode());
+                hotelRoomResponse.setRoomTypeCode(node.getRoomTypeCode());
+                hotelRoomResponse.setRateDescription(node.getRateDescription());
+                hotelRoomResponse.setRoomTypeDescription(node.getRoomTypeDescription());
+                hotelRoomResponse.setSupplierType(node.getSupplierType());
+                hotelRoomResponse.setTaxRate(node.getTaxRate());
+                hotelRoomResponse.setRateChange(node.getRateChange());
+                hotelRoomResponse.setNonRefundable(node.getNonRefundable());
+                hotelRoomResponse.setGuaranteeRequired(node.getGuaranteeRequired());
+                hotelRoomResponse.setDepositRequired(node.getDepositRequired());
+                hotelRoomResponse.setImmediateChargeRequired(node.getImmediateChargeRequired());
+                hotelRoomResponse.setCurrentAllotment(node.getCurrentAllotment());
+                hotelRoomResponse.setPropertyId(node.getPropertyId());
+                hotelRoomResponse.setPromoId(node.getPromoId());
+                hotelRoomResponse.setPromoDescription(node.getPromoDescription());
+                hotelRoomResponse.setBedTypes(node.getBedTypes());
+                hotelRoomResponse.setCancelPolicyInfoList(node.getCancelPolicyInfoList());
+                hotelRoomResponse.setSmokingPreferences(node.getSmokingPreferences());
+                hotelRoomResponse.setRateOccupancyPerRoom(node.getRateOccupancyPerRoom());
+                hotelRoomResponse.setQuotedOccupancy(node.getQuotedOccupancy());
+                hotelRoomResponse.setMinGuestAge(node.getMinGuestAge());
+                hotelRoomResponse.setRateInfos(node.getRateInfos());
+                hotelRoomResponse.setDeepLink(node.getDeepLink());
+
+                responseList.add(hotelRoomResponse);
+            }
         }
 
-        return null;  //TODO finish implement this
+        return responseList;
     }
 
     public String getCancellationPolicy() {
         return this.getStringValue("cancellationPolicy");
     }
 
+    public String getRateCode() {
+        return this.getStringValue("rateCode");
+    }
 
+    public String getRoomTypeCode() {
+        return this.getStringValue("roomTypeCode");
+    }
+
+    public String getRateDescription() {
+        return this.getStringValue("rateDescription");
+    }
+
+    public String getRoomTypeDescription() {
+        return this.getStringValue("roomTypeDescription");
+    }
+
+    public SupplierType getSupplierType() {
+        return SupplierType.fromValue(this.getStringValue("supplierType"));
+    }
+
+    public String getTaxRate() {
+        return this.getStringValue("taxRate");
+    }
+
+    public boolean getRateChange() {
+        Boolean rateChange = this.getBooleanValue("rateChange");
+        return rateChange != null ? rateChange : false;
+    }
+
+    public boolean getNonRefundable() {
+        Boolean nonRefundable = this.getBooleanValue("nonRefundable");
+        return nonRefundable != null ? nonRefundable : false;
+    }
+
+    public boolean getGuaranteeRequired() {
+        Boolean guaranteeRequired = this.getBooleanValue("guaranteeRequired");
+        return guaranteeRequired != null ? guaranteeRequired : false;
+    }
+
+    public boolean getDepositRequired() {
+        Boolean depositRequired = this.getBooleanValue("depositRequired");
+        return depositRequired != null ? depositRequired : false;
+    }
+
+    public boolean getImmediateChargeRequired() {
+        Boolean immediateChargeRequired = this.getBooleanValue("immediateChargeRequired");
+        return immediateChargeRequired != null ? immediateChargeRequired : false;
+    }
+
+    public int getCurrentAllotment() {
+        Integer currentAllotment = this.getIntegerValue("currentAllotment");
+        return currentAllotment != null ? currentAllotment : 0;
+    }
+
+    public String getPropertyId() {
+        return this.getStringValue("propertyId");
+    }
+
+    public String getPromoId() {
+        return this.getStringValue("promoId");
+    }
+
+    public String getPromoDescription() {
+        return this.getStringValue("promoDescription");
+    }
+
+    public BedTypes getBedTypes() {
+        BedTypes bedTypes = new BedTypes();
+        EanElement node = (EanElement) this.getElement("bedTypes");
+
+        if (node != null) {
+            bedTypes.setSize(node.getAttributeIntegerValue("size"));
+
+            bedTypes.getBedType().addAll(node.getBedTypeList());
+        }
+
+        return bedTypes;
+    }
+
+    public List<BedType> getBedTypeList() {
+        List<BedType> bedTypeList = new ArrayList<BedType>();
+        List<EanElement> nodeList = this.elements("BedType");
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                BedType bedType = new BedType();
+
+                Integer id = node.getAttributeIntegerValue("id");
+                bedType.setId(id != null ? id : 0);
+
+                bedType.setDescription(node.getDescription());
+
+                bedTypeList.add(bedType);
+            }
+        }
+        return bedTypeList;
+    }
+
+    public String getDescription() {
+        return this.getStringValue("description");
+    }
+
+    public CancelPolicyInfoList getCancelPolicyInfoList() {
+        //TODO implement
+        return null;
+    }
+
+    public String getSmokingPreferences() {
+        return this.getStringValue("smokingPreferences");
+    }
+
+    public int getRateOccupancyPerRoom() {
+        Integer rateOccupancyPerRoom = this.getIntegerValue("rateOccupancyPerRoom");
+        return rateOccupancyPerRoom != null ? rateOccupancyPerRoom : 0;
+    }
+
+    public int getQuotedOccupancy() {
+        Integer quotedOccupancy = this.getIntegerValue("quotedOccupancy");
+        return quotedOccupancy != null ? quotedOccupancy : 0;
+    }
+
+    public int getMinGuestAge() {
+        Integer minGuestAge = this.getIntegerValue("minGuestAge");
+        return minGuestAge != null ? minGuestAge : 0;
+    }
+
+    public RateInfos getRateInfos() {
+        //TODO implement
+        return null;
+    }
+
+    public String getDeepLink() {
+        this.getStringValue("deepLink");
+    }
 }
