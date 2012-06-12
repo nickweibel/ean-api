@@ -8,6 +8,11 @@ import com.ean.xml.client.hal.base.errors.ErrorHandling;
 import com.ean.xml.client.hal.base.properties.CancelPolicyInfo;
 import com.ean.xml.client.hal.base.properties.CancelPolicyInfoList;
 import com.ean.xml.client.hal.base.properties.HotelAvailOption;
+import com.ean.xml.client.hal.base.properties.HotelDetails;
+import com.ean.xml.client.hal.base.properties.HotelImage;
+import com.ean.xml.client.hal.base.properties.HotelImages;
+import com.ean.xml.client.hal.base.properties.PropertyAmenities;
+import com.ean.xml.client.hal.base.properties.PropertyAmenity;
 import com.ean.xml.client.hal.base.properties.ValueAdd;
 import com.ean.xml.client.hal.base.properties.ValueAdds;
 import com.ean.xml.client.hal.base.rates.BaseRateInfo;
@@ -259,7 +264,7 @@ public class EanElement extends DefaultElement {
             error = new EanWsError();
             error.setItineraryId(node.getItineraryId());
             error.setHandling(node.getHandling());
-            error.setCategory(node.getCategory());
+            error.setCategory(node.getErrorCategory());
             error.setExceptionConditionId(node.getExceptionConditionId());
             error.setPresentationMessage(node.getPresentationMessage());
             error.setVerboseMessage(node.getVerboseMessage());
@@ -279,7 +284,7 @@ public class EanElement extends DefaultElement {
         return errorHandling != null ? ErrorHandling.fromValue(errorHandling) : null;
     }
 
-    private ErrorCategory getCategory() {
+    private ErrorCategory getErrorCategory() {
         String category = this.getStringValue("category");
         return category != null ? ErrorCategory.fromValue(category) : null;
     }
@@ -1004,7 +1009,7 @@ public class EanElement extends DefaultElement {
             for (EanElement node : nodeList) {
                 RoomAmenity roomAmenity = new RoomAmenity();
 
-                roomAmenity.setAmenityId(node.getAmenityId());
+                roomAmenity.setAmenityId(node.getAttributeAmenityId());
                 roomAmenity.setAmenity(node.getAmenity());
 
                 roomAmenityList.add(roomAmenity);
@@ -1014,8 +1019,12 @@ public class EanElement extends DefaultElement {
         return roomAmenityList;
     }
 
-    private long getAmenityId() {
+    private long getAttributeAmenityId() {
         return this.getAttributeLongValuePrimitive("amenityId");
+    }
+
+    private long getAmenityId() {
+        return this.getIntegerValuePrimitive("amenityId");
     }
 
     private String getAmenity() {
@@ -1024,5 +1033,178 @@ public class EanElement extends DefaultElement {
 
     private String getDeepLink() {
         return this.getStringValue("deepLink");
+    }
+
+    public HotelDetails getHotelDetails() {
+        HotelDetails hotelDetails = null;
+        EanElement node = (EanElement) this.element("HotelDetails");
+
+        if (node != null) {
+            hotelDetails = new HotelDetails();
+            hotelDetails.setNumberOfRooms(node.getNumberOfRooms());
+            hotelDetails.setNumberOfFloors(node.getNumberOfFloors());
+            hotelDetails.setCheckInTime(node.getCheckInTime());
+            hotelDetails.setCheckOutTime(node.getCheckOutTime());
+            hotelDetails.setPropertyInformation(node.getPropertyInformation());
+            hotelDetails.setAreaInformation(node.getAreaInformation());
+            hotelDetails.setPropertyDescription(node.getPropertyDescription());
+            hotelDetails.setHotelPolicy(node.getHotelPolicy());
+            hotelDetails.setRoomInformation(node.getRoomInformation());
+            hotelDetails.setDrivingDirections(node.getDrivingDirections());
+            hotelDetails.setCheckInInstructions(node.getCheckInInstructions());
+        }
+
+        return hotelDetails;
+    }
+
+    private Integer getNumberOfRooms() {
+        return this.getIntegerValue("numberOfRooms");
+    }
+
+    private Integer getNumberOfFloors() {
+        return this.getIntegerValue("numberOfFloors");
+    }
+
+    private String getCheckInTime() {
+        return this.getStringValue("checkInTime");
+    }
+
+    private String getCheckOutTime() {
+        return this.getStringValue("checkOutTime");
+    }
+
+    private String getPropertyInformation() {
+        return this.getStringValue("propertyInformation");
+    }
+
+    private String getAreaInformation() {
+        return this.getStringValue("areaInformation");
+    }
+
+    private String getPropertyDescription() {
+        return this.getStringValue("propertyDescription");
+    }
+
+    private String getHotelPolicy() {
+        return this.getStringValue("hotelPolicy");
+    }
+
+    private String getRoomInformation() {
+        return this.getStringValue("roomInformation");
+    }
+
+    private String getDrivingDirections() {
+        return this.getStringValue("drivingDirections");
+    }
+
+    public PropertyAmenities getPropertyAmenities() {
+        PropertyAmenities propertyAmenities = null;
+        EanElement node = (EanElement) this.element("PropertyAmenities");
+
+        if (node != null) {
+            propertyAmenities = new PropertyAmenities();
+            propertyAmenities.setSize(getSizeAttributePrimitive());
+            propertyAmenities.getPropertyAmenity().addAll(getPropertyAmenityList());
+        }
+
+        return propertyAmenities;
+    }
+
+    private List<PropertyAmenity> getPropertyAmenityList() {
+        List<PropertyAmenity> propertyAmenityList = new ArrayList<PropertyAmenity>();
+        List<EanElement> nodeList = this.elements("PropertyAmenity");
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                PropertyAmenity propertyAmenity = new PropertyAmenity();
+                propertyAmenity.setAmenityId(node.getAmenityId());
+                propertyAmenity.setAmenity(node.getAmenity());
+            }
+        }
+
+        return propertyAmenityList;
+    }
+
+    public HotelImages getHotelImages() {
+        HotelImages hotelImages = null;
+        EanElement node = (EanElement) this.element("HotelImages");
+
+        if (node != null) {
+            hotelImages = new HotelImages();
+            hotelImages.setSize(node.getSizeAttributePrimitive());
+            hotelImages.getHotelImage().addAll(getHotelImageList());
+        }
+
+        return hotelImages;
+    }
+
+    private List<HotelImage> getHotelImageList() {
+        List<HotelImage> hotelImageList = new ArrayList<HotelImage>();
+        List<EanElement> nodeList = new ArrayList<EanElement>();
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                HotelImage hotelImage = new HotelImage();
+                hotelImage.setHotelImageId(node.getHotelImageId());
+                hotelImage.setName(node.getImageName());
+                hotelImage.setCategory(node.getCategory());
+                hotelImage.setType(node.getType());
+                hotelImage.setCaption(node.getCaption());
+                hotelImage.setUrl(node.getUrl());
+                hotelImage.setThumbnailUrl(node.getThumbnailUrl());
+                hotelImage.setSupplierId(node.getSupplierId());
+                hotelImage.setWidth(node.getWidth());
+                hotelImage.setHeight(node.getHeight());
+                hotelImage.setByteSize(node.getByteSize());
+
+                hotelImageList.add(hotelImage);
+            }
+        }
+
+        return hotelImageList;
+    }
+
+    private long getHotelImageId() {
+        return this.getAttributeLongValuePrimitive("hotelImageId");
+    }
+
+    private String getImageName() {
+        return this.getStringValue("imageName");
+    }
+
+    private int getCategory() {
+        return this.getIntegerValuePrimitive("category");
+    }
+
+    private int getType() {
+        return this.getIntegerValuePrimitive("type");
+    }
+
+    private String getCaption() {
+        return this.getStringValue("caption");
+    }
+
+    private String getUrl() {
+        return this.getStringValue("url");
+    }
+
+    private String getThumbnailUrl() {
+        return this.getStringValue("thumbnailUrl");
+    }
+
+    private long getSupplierId() {
+        return this.getLongValuePrimitive("supplierId");
+    }
+
+    private long getWidth() {
+        return this.getLongValuePrimitive("width");
+    }
+
+    private long getHeight() {
+        return this.getLongValuePrimitive("height");
+    }
+
+    private long getByteSize() {
+        return this.getLongValuePrimitive("byteSize");
     }
 }

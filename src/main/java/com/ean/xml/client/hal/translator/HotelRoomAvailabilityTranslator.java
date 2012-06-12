@@ -58,12 +58,10 @@ public class HotelRoomAvailabilityTranslator implements Translator
         response.setTripAdvisorRating(root.getTripAdvisorRating());
         response.setRateKey(root.getRateKey());
         response.getHotelRoomResponse().addAll(root.getHotelRoomResponseList());
-//        response.setHotelDetails();
-//        response.setPropertyAmenities();
-//        response.setHotelImages();
+        response.setHotelDetails(root.getHotelDetails());
+        response.setPropertyAmenities(root.getPropertyAmenities());
+        response.setHotelImages(root.getHotelImages());
 
         return response;
     }
 }
-
-//TODO implement 4 comments above
