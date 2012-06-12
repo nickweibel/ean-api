@@ -42,7 +42,7 @@ public class HotelRoomAvailabilityTranslator implements Translator
         EanElement root = (EanElement) document.getRootElement();
 
         response.setCustomerSessionId(root.getCustomerSessionId());
-//        response.setEanWsError();
+        response.setEanWsError(root.getEanWsError());
 
         response.setSize(root.getSizeAttributePrimitive());
         response.setHotelId(root.getHotelId());

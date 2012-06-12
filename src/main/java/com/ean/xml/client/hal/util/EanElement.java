@@ -1,5 +1,10 @@
 package com.ean.xml.client.hal.util;
 
+import com.ean.xml.client.hal.base.errors.EanWsError;
+import com.ean.xml.client.hal.base.errors.ErrorAttribute;
+import com.ean.xml.client.hal.base.errors.ErrorAttributes;
+import com.ean.xml.client.hal.base.errors.ErrorCategory;
+import com.ean.xml.client.hal.base.errors.ErrorHandling;
 import com.ean.xml.client.hal.base.properties.CancelPolicyInfo;
 import com.ean.xml.client.hal.base.properties.CancelPolicyInfoList;
 import com.ean.xml.client.hal.base.properties.HotelAvailOption;
@@ -14,6 +19,7 @@ import com.ean.xml.client.hal.base.rates.RatePlanType;
 import com.ean.xml.client.hal.base.rates.surcharge.BaseRateInfoSurcharges;
 import com.ean.xml.client.hal.base.rates.surcharge.Surcharge;
 import com.ean.xml.client.hal.base.rates.surcharge.SurchargeType;
+import com.ean.xml.client.hal.base.request.ServerInfo;
 import com.ean.xml.client.hal.base.room.BedType;
 import com.ean.xml.client.hal.base.room.BedTypes;
 import com.ean.xml.client.hal.base.room.Room;
@@ -114,6 +120,11 @@ public class EanElement extends DefaultElement {
         return (node != null) ? Integer.valueOf(node.getText()) : null;
     }
 
+    private int getIntegerValuePrimitive(String target) {
+        Integer value = getIntegerValue(target);
+        return value != null ? value : 0;
+    }
+
     private  Float getFloatValue(String target) {
         Element node = this.element(target);
         return (node != null) ? Float.valueOf(node.getText()) : null;
@@ -124,9 +135,19 @@ public class EanElement extends DefaultElement {
         return (node != null) ? Long.valueOf(node.getText()) : null;
     }
 
+    private long getLongValuePrimitive(String target) {
+        Long value = getLongValue(target);
+        return value != null ? value : 0;
+    }
+
     private Boolean getBooleanValue(String target) {
         Element node = this.element(target);
         return (node != null) ? Boolean.valueOf(node.getText()): null;
+    }
+
+    private boolean getBooleanValuePrimitive(String target) {
+        Boolean value = getBooleanValue(target);
+        return value != null ? value : false;
     }
 
     private DateTime getDateTime(String target) {
@@ -144,9 +165,19 @@ public class EanElement extends DefaultElement {
         return (attribute != null) ? Integer.valueOf(attribute.getValue()) : null;
     }
 
+    private int getAttributeIntegerValuePrimitive(String target) {
+        Integer value = getAttributeIntegerValue(target);
+        return value != null ? value : 0;
+    }
+
     private Long getAttributeLongValue(String target) {
         Attribute attribute = this.attribute(target);
         return attribute != null ? Long.valueOf(attribute.getValue()) : null;
+    }
+
+    private long getAttributeLongValuePrimitive(String target) {
+        Long value = getAttributeLongValue(target);
+        return value != null ? value : 0;
     }
 
     private Float getAttributeFloatValue(String target) {
@@ -220,14 +251,121 @@ public class EanElement extends DefaultElement {
     }
 
     // RESPONSE HELPERS
+    public EanWsError getEanWsError() {
+        EanWsError error = null;
+        EanElement node = (EanElement) this.element("EanWsError");
+
+        if (node != null) {
+            error = new EanWsError();
+            error.setItineraryId(node.getItineraryId());
+            error.setHandling(node.getHandling());
+            error.setCategory(node.getCategory());
+            error.setExceptionConditionId(node.getExceptionConditionId());
+            error.setPresentationMessage(node.getPresentationMessage());
+            error.setVerboseMessage(node.getVerboseMessage());
+            error.setErrorAttributes(node.getErrorAttributes());
+            error.setServerInfo(node.getServerInfo());
+        }
+
+        return error;
+    }
+
+    private long getItineraryId() {
+        return this.getLongValuePrimitive("itineraryId");
+    }
+
+    private ErrorHandling getHandling() {
+        String errorHandling = this.getStringValue("handling");
+        return errorHandling != null ? ErrorHandling.fromValue(errorHandling) : null;
+    }
+
+    private ErrorCategory getCategory() {
+        String category = this.getStringValue("category");
+        return category != null ? ErrorCategory.fromValue(category) : null;
+    }
+
+    private int getExceptionConditionId() {
+        return this.getIntegerValuePrimitive("exceptionConditionId");
+    }
+
+    private String getPresentationMessage() {
+        return this.getStringValue("presentationMessage");
+    }
+
+    private String getVerboseMessage() {
+        return this.getStringValue("verboseMessage");
+    }
+
+    private ErrorAttributes getErrorAttributes() {
+        ErrorAttributes errorAttributes = null;
+        EanElement node = (EanElement) this.element("ErrorAttributes");
+
+        if (node != null) {
+            errorAttributes = new ErrorAttributes();
+            errorAttributes.setErrorAttributesMap(getErrorAttributesMap());
+        }
+
+        return errorAttributes;
+    }
+
+    private ErrorAttributes.ErrorAttributesMap getErrorAttributesMap() {
+        ErrorAttributes.ErrorAttributesMap attributesMap = new ErrorAttributes.ErrorAttributesMap();
+        List<EanElement> nodeList = this.elements("entry");
+
+        if (nodeList != null) {
+            for (EanElement node : nodeList) {
+                ErrorAttributes.ErrorAttributesMap.Entry entry = new ErrorAttributes.ErrorAttributesMap.Entry();
+                entry.setKey(node.getKey());
+                entry.setValue(node.getValue());
+
+                attributesMap.getEntry().add(entry);
+            }
+        }
+
+        return attributesMap;
+    }
+
+    private ErrorAttribute getKey() {
+        String errorAttribute = this.getStringValue("key");
+        return errorAttribute != null ? ErrorAttribute.fromValue(errorAttribute) : null;
+    }
+
+    private String getValue() {
+        return this.getStringValue("value");
+    }
+
+    private ServerInfo getServerInfo() {
+        ServerInfo serverInfo = null;
+        EanElement node = (EanElement) this.element("ServerInfo");
+
+        if (node != null) {
+            serverInfo = new ServerInfo();
+            serverInfo.setServerTime(node.getServerTime());
+            serverInfo.setTimestamp(node.getTimestamp());
+            serverInfo.setInstance(node.getInstance());
+        }
+
+        return serverInfo;
+    }
+
+    private String getServerTime() {
+        return this.getAttributeStringValue("serverTime");
+    }
+
+    private long getTimestamp() {
+        return this.getAttributeLongValuePrimitive("timestamp");
+    }
+
+    private String getInstance() {
+        return this.getAttributeStringValue("instance");
+    }
 
     public String getCustomerSessionId() {
         return this.getStringValue("customerSessionId");
     }
 
     public long getHotelId() {
-        Long hotelId = this.getLongValue("hotelId");
-        return hotelId != null ? hotelId : 0;
+        return this.getLongValuePrimitive("hotelId");
     }
 
     public DateTime getArrivalDate() {
@@ -276,7 +414,7 @@ public class EanElement extends DefaultElement {
 
     public List<HotelRoomResponse> getHotelRoomResponseList() {
         List<EanElement> elementList = elements("hotelRomeResponse");
-        List<HotelRoomResponse> responseList = new ArrayList<HotelRoomResponse>();
+        List<HotelRoomResponse> responseList = new ArrayList<HotelRoomResponse>();;
 
         if (elementList != null) {
             for (EanElement node : elementList) {
@@ -357,8 +495,7 @@ public class EanElement extends DefaultElement {
     }
 
     private boolean getRateChange() {
-        Boolean rateChange = this.getBooleanValue("rateChange");
-        return rateChange != null ? rateChange : false;
+        return this.getBooleanValuePrimitive("rateChange");
     }
 
     private Boolean getNonRefundable() {
@@ -366,28 +503,23 @@ public class EanElement extends DefaultElement {
     }
 
     private boolean getNonRefundablePrimitive() {
-        Boolean nonRefundable = getNonRefundable();
-        return nonRefundable != null ? nonRefundable : false;
+        return this.getBooleanValuePrimitive("nonRefundable");
     }
 
     private boolean getGuaranteeRequired() {
-        Boolean guaranteeRequired = this.getBooleanValue("guaranteeRequired");
-        return guaranteeRequired != null ? guaranteeRequired : false;
+        return this.getBooleanValuePrimitive("guaranteeRequired");
     }
 
     private boolean getDepositRequired() {
-        Boolean depositRequired = this.getBooleanValue("depositRequired");
-        return depositRequired != null ? depositRequired : false;
+        return this.getBooleanValuePrimitive("depositRequired");
     }
 
     private boolean getImmediateChargeRequired() {
-        Boolean immediateChargeRequired = this.getBooleanValue("immediateChargeRequired");
-        return immediateChargeRequired != null ? immediateChargeRequired : false;
+        return this.getBooleanValuePrimitive("immediateChargeRequired");
     }
 
     private int getCurrentAllotment() {
-        Integer currentAllotment = this.getIntegerValue("currentAllotment");
-        return currentAllotment != null ? currentAllotment : 0;
+        return this.getIntegerValuePrimitive("currentAllotment");
     }
 
     private String getPropertyId() {
@@ -411,12 +543,12 @@ public class EanElement extends DefaultElement {
     }
 
     private BedTypes getBedTypes() {
-        BedTypes bedTypes = new BedTypes();
+        BedTypes bedTypes = null;
         EanElement node = (EanElement) this.getElement("bedTypes");
 
         if (node != null) {
+            bedTypes = new BedTypes();
             bedTypes.setSize(node.getSizeAttribute());
-
             bedTypes.getBedType().addAll(node.getBedTypeList());
         }
 
@@ -428,8 +560,7 @@ public class EanElement extends DefaultElement {
     }
 
     public int getSizeAttributePrimitive() {
-        Integer size = getSizeAttribute();
-        return size != null ? size : 0;
+        return this.getAttributeIntegerValuePrimitive("size");
     }
 
     private List<BedType> getBedTypeList() {
@@ -437,13 +568,11 @@ public class EanElement extends DefaultElement {
         List<EanElement> nodeList = this.elements("BedType");
 
         if (nodeList != null) {
+
             for (EanElement node : nodeList) {
                 BedType bedType = new BedType();
-
                 bedType.setId(node.getIdAttribute());
-
                 bedType.setDescription(node.getDescription());
-
                 bedTypeList.add(bedType);
             }
         }
@@ -451,8 +580,8 @@ public class EanElement extends DefaultElement {
     }
 
     private int getIdAttribute() {
-        Integer id = this.getAttributeIntegerValue("id");
-        return id != null ? id : 0;
+        return this.getAttributeIntegerValuePrimitive("id");
+
     }
 
     private String getDescription() {
@@ -460,10 +589,11 @@ public class EanElement extends DefaultElement {
     }
 
     private CancelPolicyInfoList getCancelPolicyInfoList() {
-        CancelPolicyInfoList cancelPolicyInfoList = new CancelPolicyInfoList();
+        CancelPolicyInfoList cancelPolicyInfoList = null;
         EanElement node = (EanElement) this.getElement("CancelPolicyInfoList");
 
         if (node != null) {
+            cancelPolicyInfoList = new CancelPolicyInfoList();
             cancelPolicyInfoList.getCancelPolicyInfo().addAll(getCancelPolicyInfo());
         }
 
@@ -471,10 +601,12 @@ public class EanElement extends DefaultElement {
     }
 
     private List<CancelPolicyInfo> getCancelPolicyInfo() {
-        List<CancelPolicyInfo> cancelPolicyInfoList = new ArrayList<CancelPolicyInfo>();
+        List<CancelPolicyInfo> cancelPolicyInfoList = null;
         List<EanElement> nodeList = this.elements("CancelPolicyInfo");
 
         if (nodeList != null) {
+            cancelPolicyInfoList = new ArrayList<CancelPolicyInfo>();
+
             for (EanElement node : nodeList) {
                 CancelPolicyInfo cancelPolicyInfo = new CancelPolicyInfo();
 
@@ -494,8 +626,7 @@ public class EanElement extends DefaultElement {
     }
 
     private int getVersionId() {
-        Integer versionId = this.getIntegerValue("versionId");
-        return versionId != null ? versionId : 0;
+        return this.getIntegerValuePrimitive("versionId");
     }
 
     private String getCancelTime() {
@@ -507,8 +638,7 @@ public class EanElement extends DefaultElement {
     }
 
     private int getNightCount() {
-        Integer nightCount = this.getIntegerValue("nightCount");
-        return nightCount != null ? nightCount : 0;
+        return this.getIntegerValuePrimitive("nightCount");
     }
 
     private String getPercent() {
@@ -528,27 +658,24 @@ public class EanElement extends DefaultElement {
     }
 
     private int getRateOccupancyPerRoom() {
-        Integer rateOccupancyPerRoom = this.getIntegerValue("rateOccupancyPerRoom");
-        return rateOccupancyPerRoom != null ? rateOccupancyPerRoom : 0;
+        return this.getIntegerValuePrimitive("rateOccupancyPerRoom");
     }
 
     private int getQuotedOccupancy() {
-        Integer quotedOccupancy = this.getIntegerValue("quotedOccupancy");
-        return quotedOccupancy != null ? quotedOccupancy : 0;
+        return this.getIntegerValuePrimitive("quotedOccupancy");
     }
 
     private int getMinGuestAge() {
-        Integer minGuestAge = this.getIntegerValue("minGuestAge");
-        return minGuestAge != null ? minGuestAge : 0;
+        return this.getIntegerValuePrimitive("minGuestAge");
     }
 
     private RateInfos getRateInfos() {
         EanElement node = (EanElement) this.getElement("RateInfos");
-        RateInfos rateInfos = new RateInfos();
+        RateInfos rateInfos = null;
 
         if (node != null) {
+            rateInfos = new RateInfos();
             rateInfos.setSize(node.getSize());
-
             rateInfos.getRateInfo().addAll(node.getRateInfoList());
         }
 
@@ -625,8 +752,7 @@ public class EanElement extends DefaultElement {
     }
 
     private int getNumberOfAdults() {
-        Integer numberOfAdults = this.getIntegerValue("numberOfAdults");
-        return numberOfAdults != null ? numberOfAdults : 0;
+        return this.getIntegerValuePrimitive("numberOfAdults");
     }
 
     private Integer getNumberOfChildren() {
@@ -653,7 +779,7 @@ public class EanElement extends DefaultElement {
 
     private BaseRateInfo getChargeableRateInfo() {
         EanElement node = (EanElement) this.getElement("ChargeableRateInfo");
-        
+
         return node != null ? node.getBaseRateInfo() : null;
     }
     
@@ -704,12 +830,12 @@ public class EanElement extends DefaultElement {
     }
 
     private BaseRateInfoNightlyRatesPerRoom getNightlyRatesPerRoom() {
-        BaseRateInfoNightlyRatesPerRoom ratesPerRoom = new BaseRateInfoNightlyRatesPerRoom();
+        BaseRateInfoNightlyRatesPerRoom ratesPerRoom = null;
         EanElement node = (EanElement) this.element("NightlyRatesPerRoom");
 
         if (node != null) {
+            ratesPerRoom = new BaseRateInfoNightlyRatesPerRoom();
             ratesPerRoom.setSize(node.getSizeAttributePrimitive());
-
             ratesPerRoom.getNightlyRate().addAll(node.getNightlyRateList());
         }
 
@@ -744,12 +870,12 @@ public class EanElement extends DefaultElement {
     }
 
     private BaseRateInfoSurcharges getSurcharges() {
-        BaseRateInfoSurcharges surcharges = new BaseRateInfoSurcharges();
+        BaseRateInfoSurcharges surcharges = null;
         EanElement node = (EanElement) this.element("Surcharges");
 
         if (node != null) {
+            surcharges = new BaseRateInfoSurcharges();
             surcharges.setSize(node.getSizeAttributePrimitive());
-
             surcharges.getSurcharge().addAll(node.getSurchargeList());
         }
 
@@ -799,10 +925,11 @@ public class EanElement extends DefaultElement {
     }
 
     private ValueAdds getValueAdds() {
-        ValueAdds valueAdds = new ValueAdds();
+        ValueAdds valueAdds = null;
         EanElement node = (EanElement) this.element("ValueAdds");
 
         if (node != null) {
+            valueAdds = new ValueAdds();
             valueAdds.setSize(node.getSizeAttribute());
             valueAdds.getValueAdd().addAll(node.getValueAddList());
         }
@@ -829,10 +956,11 @@ public class EanElement extends DefaultElement {
     }
 
     private RoomType getRoomType() {
-        RoomType roomType = new RoomType();
+        RoomType roomType = null;
         EanElement node = (EanElement) this.element("RoomType");
 
         if (node != null) {
+            roomType = new RoomType();
             roomType.setRoomCode(node.getRoomCodeAttribute());
             roomType.setRoomTypeId(node.getRoomTypeIdAttribute());
             roomType.setDescription(node.getDescription());
@@ -848,8 +976,7 @@ public class EanElement extends DefaultElement {
     }
 
     private long getRoomTypeIdAttribute() {
-        Long roomTypeId = this.getAttributeLongValue("roomTypeId");
-        return roomTypeId != null ? roomTypeId : 0;
+        return this.getAttributeLongValuePrimitive("roomTypeId");
     }
 
     private String getDescriptionLong() {
@@ -857,10 +984,11 @@ public class EanElement extends DefaultElement {
     }
 
     private RoomAmenities getRoomAmenities() {
-        RoomAmenities roomAmenities = new RoomAmenities();
+        RoomAmenities roomAmenities = null;
         EanElement node = (EanElement) this.element("roomAmenities");
 
         if (node != null) {
+            roomAmenities = new RoomAmenities();
             roomAmenities.setSize(node.getSizeAttributePrimitive());
             roomAmenities.getRoomAmenity().addAll(node.getRoomAmenityList());
         }
@@ -887,8 +1015,7 @@ public class EanElement extends DefaultElement {
     }
 
     private long getAmenityId() {
-        Long amenityId = this.getAttributeLongValue("amenityId");
-        return amenityId != null ? amenityId : 0;
+        return this.getAttributeLongValuePrimitive("amenityId");
     }
 
     private String getAmenity() {
