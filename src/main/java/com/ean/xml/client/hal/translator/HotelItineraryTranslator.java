@@ -22,6 +22,7 @@ public class HotelItineraryTranslator implements Translator {
         Document document = DocumentHelper.createDocument();
         EanElement root = (EanElement) document.addElement("HotelItineraryRequest");
 
+        //TODO finish this
 //        root.addItineraryId(request.getItineraryId());
 //        root.addAffiliateConfirmationId(request.getAffiliateConfirmationId());
 //        root.addEmail(request.getEmail());
@@ -44,7 +45,8 @@ public class HotelItineraryTranslator implements Translator {
         response.setCustomerSessionId(root.getCustomerSessionId());
         response.setEanWsError(root.getEanWsError());
 
-//        response.getItinerary().addAll(root.getItineraryList());
+        response.setSize(root.getSizeAttributePrimitive());
+        response.getItinerary().addAll(root.getItineraryList());
 
         return response;
     }

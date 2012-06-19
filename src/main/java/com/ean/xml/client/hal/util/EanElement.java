@@ -5,6 +5,7 @@ import com.ean.xml.client.hal.base.errors.ErrorAttribute;
 import com.ean.xml.client.hal.base.errors.ErrorAttributes;
 import com.ean.xml.client.hal.base.errors.ErrorCategory;
 import com.ean.xml.client.hal.base.errors.ErrorHandling;
+import com.ean.xml.client.hal.base.itinerary.Itinerary;
 import com.ean.xml.client.hal.base.properties.CancelPolicyInfo;
 import com.ean.xml.client.hal.base.properties.CancelPolicyInfoList;
 import com.ean.xml.client.hal.base.properties.HotelAvailOption;
@@ -1140,7 +1141,7 @@ public class EanElement extends DefaultElement {
 
     private List<HotelImage> getHotelImageList() {
         List<HotelImage> hotelImageList = new ArrayList<HotelImage>();
-        List<EanElement> nodeList = new ArrayList<EanElement>();
+        List<EanElement> nodeList = this.elements("HotelImage");
 
         if (nodeList != null) {
             for (EanElement node : nodeList) {
@@ -1210,5 +1211,30 @@ public class EanElement extends DefaultElement {
 
     public String getEcho() {
         return this.getStringValue("echo");
+    }
+
+    public List<Itinerary> getItineraryList() {
+        List<Itinerary> itineraryList = new ArrayList<Itinerary>();
+        List<EanElement> nodeList = this.elements("Itinerary");
+
+        if (nodeList == null) {
+            for (EanElement node : nodeList) {
+                Itinerary itinerary = new Itinerary();
+
+                //TODO Continue this
+//                itinerary.setItineraryId(node.getItineraryId());
+//                itinerary.setAffiliateId(node.getAffiliateId());
+//                itinerary.setCreationDate(node.getCreationDate());
+//                itinerary.setItineraryStartDate(node.getItineraryStartDate());
+//                itinerary.setItineraryEndDate(node.getItineraryEndDate());
+//                itinerary.setAffiliateCustomerId(node.getAffilaiteCustomerId());
+//                itinerary.setCustomer(node.getCustomer());
+//                itinerary.getHotelConfirmation().addAll(node.getHotelConfirmationList());
+
+                itineraryList.add(itinerary);
+            }
+        }
+
+        return itineraryList;
     }
 }
