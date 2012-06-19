@@ -339,7 +339,7 @@ public class EanElement extends DefaultElement {
         return this.getStringValue("value");
     }
 
-    private ServerInfo getServerInfo() {
+    public ServerInfo getServerInfo() {
         ServerInfo serverInfo = null;
         EanElement node = (EanElement) this.element("ServerInfo");
 
@@ -1206,5 +1206,9 @@ public class EanElement extends DefaultElement {
 
     private long getByteSize() {
         return this.getLongValuePrimitive("byteSize");
+    }
+
+    public String getEcho() {
+        return this.getStringValue("echo");
     }
 }

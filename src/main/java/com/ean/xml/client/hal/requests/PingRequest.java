@@ -1,62 +1,32 @@
-
 package com.ean.xml.client.hal.requests;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
-
-
 /**
- * <p>Java class for PingRequest complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="PingRequest">
- *   &lt;complexContent>
- *     &lt;extension base="{http://v3.properties.wsapi.ean.com/}HotelBaseRequest">
- *       &lt;sequence>
- *         &lt;element name="echo" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
+ * Ping request used to test the connection between the XML servers and the Affiliate servers.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "PingRequest", propOrder = {
-    "echo"
-})
-public class PingRequest
-    extends HotelBaseRequest
-{
-
-    protected String echo;
+public class PingRequest extends HotelBaseRequest {
+    private String echo;
 
     /**
-     * Gets the value of the echo property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * Creates a Ping request.
+     * @param echo Test string we expect to receive in response.
+     */
+    public PingRequest(String echo) {
+        this.echo = echo;
+    }
+
+    /**
+     * Gets the Echo test string.
+     * @return test string.
      */
     public String getEcho() {
         return echo;
     }
 
     /**
-     * Sets the value of the echo property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * Sets the Echo test string.
+     * @param value test string.
      */
     public void setEcho(String value) {
         this.echo = value;
     }
-
 }

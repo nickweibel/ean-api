@@ -1,89 +1,38 @@
-
 package com.ean.xml.client.hal.responses;
 
 import com.ean.xml.client.hal.base.request.ServerInfo;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for PingResponse complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="PingResponse">
- *   &lt;complexContent>
- *     &lt;extension base="{http://v3.properties.wsapi.ean.com/}BaseResponse">
- *       &lt;sequence>
- *         &lt;element name="echo" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="ServerInfo" type="{http://v3.properties.wsapi.ean.com/}ServerInfo" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "PingResponse", propOrder = {
-    "echo",
-    "serverInfo"
-})
-public class PingResponse
-    extends BaseResponse
-{
-
+public class PingResponse extends BaseResponse {
     protected String echo;
-    @XmlElement(name = "ServerInfo")
     protected ServerInfo serverInfo;
 
     /**
-     * Gets the value of the echo property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * Gets the Echo test string.
+     * @return test string.
      */
     public String getEcho() {
         return echo;
     }
 
     /**
-     * Sets the value of the echo property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * Sets the Echo test string.
+     * @param value test string.
      */
     public void setEcho(String value) {
         this.echo = value;
     }
 
     /**
-     * Gets the value of the serverInfo property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ServerInfo }
-     *     
+     * Gets the server information.
+     * @return server information.
      */
     public ServerInfo getServerInfo() {
         return serverInfo;
     }
 
     /**
-     * Sets the value of the serverInfo property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ServerInfo }
-     *     
+     * Sets the server information.
+     * @param value server information.
      */
     public void setServerInfo(ServerInfo value) {
         this.serverInfo = value;
