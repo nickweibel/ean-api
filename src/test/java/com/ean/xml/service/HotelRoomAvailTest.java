@@ -10,9 +10,6 @@ package com.ean.xml.service;
 import com.ean.xml.client.hal.base.room.RoomGroup;
 import com.ean.xml.client.hal.requests.HotelRoomAvailabilityRequest;
 import com.ean.xml.client.hal.responses.HotelRoomAvailabilityResponse;
-import com.ean.xml.client.hal.translator.HotelRoomAvailabilityTranslator;
-import com.ean.xml.client.hal.translator.Translator;
-import org.dom4j.Document;
 import org.joda.time.DateTime;
 import org.junit.Test;
 

@@ -8,51 +8,21 @@
     <artifactId>ean-api</artifactId>
     <version>1.0-snapshot</version>
 
-    <properties>
-        <project.wsdlSEI>http://api.ean.com/ean-services/ws/hotel/v3</project.wsdlSEI>
-        <project.wsdlLocation>http://api.ean.com/ean-services/ws/hotel/v3?wsdl</project.wsdlLocation>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>2.4.1</version>
-                <configuration>
-                    <verbose>false</verbose>
-                    <filesets>
-                        <fileset>
-                            <directory>src/main/java/com/ean/xml/client/v3/generated/</directory>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                    </filesets>
-                </configuration>
             </plugin>
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>1.10</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
-                    <sei>${project.wsdlSEI}</sei>
-                    <xjcArgs>
-                        <arg>-XautoNameResolution</arg>
-                    </xjcArgs>
-                    <verbose>true</verbose>
-                    <xdebug>true</xdebug>
-                    <wsdlUrls>
-                        <wsdlUrl>${project.wsdlLocation}</wsdlUrl>
-                    </wsdlUrls>
-                    <sourceDestDir>${project.build.sourceDirectory}</sourceDestDir>
-                    <packageName>com.ean.xml.client.v3.generated</packageName>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
 
@@ -112,5 +82,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
 </project>
