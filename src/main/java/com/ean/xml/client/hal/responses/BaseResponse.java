@@ -2,54 +2,10 @@
 package com.ean.xml.client.hal.responses;
 
 import com.ean.xml.client.hal.base.errors.EanWsError;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for BaseResponse complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="BaseResponse">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="EanWsError" type="{http://v3.properties.wsapi.ean.com/}EanWsError" minOccurs="0"/>
- *         &lt;element name="customerSessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "BaseResponse", propOrder = {
-    "eanWsError",
-    "customerSessionId"
-})
-@XmlSeeAlso({
-    HotelListResponse.class,
-    HotelRoomCancellationResponse.class,
-    HotelRoomReservationResponse.class,
-    AlternatePropertyListResponse.class,
-    HotelPaymentResponse.class,
-    HotelRoomAvailabilityResponse.class,
-    LocationInfoResponse.class,
-    HotelRateRulesResponse.class,
-    HotelInformationResponse.class,
-    HotelItineraryResponse.class,
-    PingResponse.class
-})
 public class BaseResponse {
 
-    @XmlElement(name = "EanWsError")
     protected EanWsError eanWsError;
     protected String customerSessionId;
 

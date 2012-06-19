@@ -5,68 +5,13 @@ import com.ean.xml.client.hal.base.request.LocaleType;
 import com.ean.xml.client.hal.base.request.MapEntry;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for BaseRequest complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="BaseRequest">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="apiKey" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="cid" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="customerIpAddress" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="customerSessionId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="customerUserAgent" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="locale" type="{http://v3.properties.wsapi.ean.com/}LocaleType" minOccurs="0"/>
- *         &lt;element name="currencyCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="additionalData" type="{http://v3.properties.wsapi.ean.com/}mapEntry" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="sig" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="debug" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="test" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "BaseRequest", propOrder = {
-    "apiKey",
-    "cid",
-    "customerIpAddress",
-    "customerSessionId",
-    "customerUserAgent",
-    "locale",
-    "currencyCode",
-    "additionalData",
-    "sig",
-    "debug",
-    "test"
-})
-@XmlSeeAlso({
-    HotelBaseRequest.class
-})
 public abstract class BaseRequest {
 
-    @XmlElement(required = true)
     protected String apiKey;
     protected long cid;
-    @XmlElement(required = true)
     protected String customerIpAddress;
     protected String customerSessionId;
-    @XmlElement(required = true)
     protected String customerUserAgent;
     protected LocaleType locale;
     protected String currencyCode;

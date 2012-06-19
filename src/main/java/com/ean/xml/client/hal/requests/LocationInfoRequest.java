@@ -1,55 +1,7 @@
 
 package com.ean.xml.client.hal.requests;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
-
-
-/**
- * <p>Java class for LocationInfoRequest complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="LocationInfoRequest">
- *   &lt;complexContent>
- *     &lt;extension base="{http://v3.properties.wsapi.ean.com/}HotelBaseRequest">
- *       &lt;sequence>
- *         &lt;element name="address" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="city" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="stateProvinceCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="countryCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="postalCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="destinationString" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="destinationId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="ignoreSearchWeight" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="useGeocoder" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="type" type="{http://v3.properties.wsapi.ean.com/}LocationInfoType" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "LocationInfoRequest", propOrder = {
-    "address",
-    "city",
-    "stateProvinceCode",
-    "countryCode",
-    "postalCode",
-    "destinationString",
-    "destinationId",
-    "ignoreSearchWeight",
-    "useGeocoder",
-    "type"
-})
-public class LocationInfoRequest
-    extends HotelBaseRequest
-{
+public class LocationInfoRequest extends HotelBaseRequest {
 
     protected String address;
     protected String city;
@@ -286,7 +238,7 @@ public class LocationInfoRequest
      *     {@link String }
      *     
      */
-    public String getType() {
+    public String getPropertyType() {
         return type;
     }
 
@@ -298,7 +250,7 @@ public class LocationInfoRequest
      *     {@link String }
      *     
      */
-    public void setType(String value) {
+    public void setPropertyType(String value) {
         this.type = value;
     }
 

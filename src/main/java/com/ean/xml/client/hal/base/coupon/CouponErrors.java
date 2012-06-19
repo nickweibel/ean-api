@@ -1,7 +1,6 @@
 
 package com.ean.xml.client.hal.base.coupon;
 
-import com.ean.xml.client.v3.generated.*;
 import com.ean.xml.client.hal.base.errors.Error;
 import java.util.ArrayList;
 import java.util.List;

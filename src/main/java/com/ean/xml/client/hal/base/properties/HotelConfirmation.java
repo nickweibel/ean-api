@@ -3,91 +3,12 @@ package com.ean.xml.client.hal.base.properties;
 
 import com.ean.xml.client.hal.base.confirmationExtra.ConfirmationExtras;
 import com.ean.xml.client.hal.base.coupon.CouponInformation;
+import com.ean.xml.client.hal.base.rates.HotelRateInfo;
 import com.ean.xml.client.hal.base.rates.RateInfos;
 import com.ean.xml.client.hal.base.customerInfo.ReservationGuest;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for HotelConfirmation complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="HotelConfirmation">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="supplierId" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="chainCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="creditCardType" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="arrivalDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="departureDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="confirmationNumber" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="cancellationNumber" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="RateInfo" type="{http://v3.properties.wsapi.ean.com/}HotelRateInfo" minOccurs="0"/>
- *         &lt;element name="RateInfos" type="{http://v3.properties.wsapi.ean.com/}RateInfos" minOccurs="0"/>
- *         &lt;element name="numberOfAdults" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="numberOfChildren" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="cancellationPolicy" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="affiliateConfirmationId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="smokingPreference" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="supplierPropertyId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="roomType" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="rateType" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="rateDescription" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="roomDescription" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="nonRefundable" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
- *         &lt;element name="locale" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="CouponInformation" type="{http://v3.properties.wsapi.ean.com/}CouponInformation" minOccurs="0"/>
- *         &lt;element name="ReservationGuest" type="{http://v3.properties.wsapi.ean.com/}ReservationGuest" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="Hotel" type="{http://v3.properties.wsapi.ean.com/}Hotel" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="ConfirmationExtras" type="{http://v3.properties.wsapi.ean.com/}ConfirmationExtras" minOccurs="0"/>
- *         &lt;element name="nights" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "HotelConfirmation", propOrder = {
-    "supplierId",
-    "chainCode",
-    "creditCardType",
-    "arrivalDate",
-    "departureDate",
-    "confirmationNumber",
-    "cancellationNumber",
-    "rateInfo",
-    "rateInfos",
-    "numberOfAdults",
-    "numberOfChildren",
-    "cancellationPolicy",
-    "affiliateConfirmationId",
-    "smokingPreference",
-    "supplierPropertyId",
-    "roomType",
-    "rateType",
-    "rateDescription",
-    "roomDescription",
-    "status",
-    "nonRefundable",
-    "locale",
-    "couponInformation",
-    "reservationGuest",
-    "hotel",
-    "confirmationExtras",
-    "nights"
-})
 public class HotelConfirmation {
 
     protected long supplierId;
@@ -97,9 +18,7 @@ public class HotelConfirmation {
     protected String departureDate;
     protected String confirmationNumber;
     protected String cancellationNumber;
-    @XmlElement(name = "RateInfo")
     protected HotelRateInfo rateInfo;
-    @XmlElement(name = "RateInfos")
     protected RateInfos rateInfos;
     protected int numberOfAdults;
     protected int numberOfChildren;
@@ -114,13 +33,9 @@ public class HotelConfirmation {
     protected String status;
     protected boolean nonRefundable;
     protected String locale;
-    @XmlElement(name = "CouponInformation")
     protected CouponInformation couponInformation;
-    @XmlElement(name = "ReservationGuest")
     protected List<ReservationGuest> reservationGuest;
-    @XmlElement(name = "Hotel")
     protected List<Hotel> hotel;
-    @XmlElement(name = "ConfirmationExtras")
     protected ConfirmationExtras confirmationExtras;
     protected Integer nights;
 

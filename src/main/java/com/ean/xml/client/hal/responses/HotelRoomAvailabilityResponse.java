@@ -13,9 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import org.joda.time.DateTime;
 
-public class HotelRoomAvailabilityResponse
-    extends BaseResponse
-{
+public class HotelRoomAvailabilityResponse extends BaseResponse {
     public HotelRoomAvailabilityResponse() {
         //Do Nothing
     }

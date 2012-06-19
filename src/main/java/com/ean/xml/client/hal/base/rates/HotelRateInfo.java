@@ -1,84 +1,26 @@
 
 package com.ean.xml.client.hal.base.rates;
 
+import com.ean.xml.client.hal.base.properties.CancelPolicyInfoList;
 import com.ean.xml.client.hal.base.room.RoomGroup;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for HotelRateInfo complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="HotelRateInfo">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="RoomGroup" type="{http://v3.properties.wsapi.ean.com/}RoomGroup" minOccurs="0"/>
- *         &lt;element name="ChargeableRateInfo" type="{http://v3.properties.wsapi.ean.com/}baseRateInfo" minOccurs="0"/>
- *         &lt;element name="ConvertedRateInfo" type="{http://v3.properties.wsapi.ean.com/}baseRateInfo" minOccurs="0"/>
- *         &lt;element name="confirmationNumbers" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="cancellationPolicy" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="CancelPolicyInfoList" type="{http://v3.properties.wsapi.ean.com/}CancelPolicyInfoList" minOccurs="0"/>
- *         &lt;element name="nonRefundable" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="online" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
- *         &lt;element name="ratePlanType" type="{http://v3.properties.wsapi.ean.com/}RatePlanType" minOccurs="0"/>
- *       &lt;/sequence>
- *       &lt;attribute name="priceBreakdown" type="{http://www.w3.org/2001/XMLSchema}boolean" />
- *       &lt;attribute name="promo" type="{http://www.w3.org/2001/XMLSchema}boolean" />
- *       &lt;attribute name="rateChange" type="{http://www.w3.org/2001/XMLSchema}boolean" />
- *       &lt;attribute name="pkgSavingsPercent" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="pkgSavingsAmount" type="{http://www.w3.org/2001/XMLSchema}string" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "HotelRateInfo", propOrder = {
-    "roomGroup",
-    "chargeableRateInfo",
-    "convertedRateInfo",
-    "confirmationNumbers",
-    "cancellationPolicy",
-    "cancelPolicyInfoList",
-    "nonRefundable",
-    "online",
-    "ratePlanType"
-})
 public class HotelRateInfo {
 
-    @XmlElement(name = "RoomGroup")
     protected RoomGroup roomGroup;
-    @XmlElement(name = "ChargeableRateInfo")
     protected BaseRateInfo chargeableRateInfo;
-    @XmlElement(name = "ConvertedRateInfo")
     protected BaseRateInfo convertedRateInfo;
     protected List<String> confirmationNumbers;
     protected String cancellationPolicy;
-    @XmlElement(name = "CancelPolicyInfoList")
     protected CancelPolicyInfoList cancelPolicyInfoList;
     protected Boolean nonRefundable;
     protected Boolean online;
     protected RatePlanType ratePlanType;
-    @XmlAttribute
     protected Boolean priceBreakdown;
-    @XmlAttribute
     protected Boolean promo;
-    @XmlAttribute
     protected Boolean rateChange;
-    @XmlAttribute
     protected String pkgSavingsPercent;
-    @XmlAttribute
     protected String pkgSavingsAmount;
 
     /**

@@ -6,6 +6,7 @@ import com.ean.xml.client.hal.responses.HotelRoomAvailabilityResponse;
 import com.ean.xml.client.hal.util.EanElement;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 
 /**
  * Translator used to transform requests to xml documents and xml documents to responses.

@@ -11,9 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.joda.time.DateTime;
 
-public class HotelRoomAvailabilityRequest
-    extends HotelBaseRequest
-{
+public class HotelRoomAvailabilityRequest extends HotelBaseRequest {
     private long hotelId;
     private DateTime arrivalDate;
     private DateTime departureDate;
@@ -54,6 +52,10 @@ public class HotelRoomAvailabilityRequest
         }
     }
 
+    @Override
+    public RequestType getType() {
+        return RequestType.AVAIL;
+    }
 
     /**
      * Gets the value of the hotelId property.
