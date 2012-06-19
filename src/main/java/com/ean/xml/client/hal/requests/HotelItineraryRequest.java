@@ -1,228 +1,138 @@
-
 package com.ean.xml.client.hal.requests;
 
 import com.ean.xml.client.hal.base.itinerary.ItineraryQuery;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-
 
 /**
- * <p>Java class for HotelItineraryRequest complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="HotelItineraryRequest">
- *   &lt;complexContent>
- *     &lt;extension base="{http://v3.properties.wsapi.ean.com/}HotelBaseRequest">
- *       &lt;sequence>
- *         &lt;element name="itineraryId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="lastName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="email" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="affiliateConfirmationId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="affiliateCustomerId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="ItineraryQuery" type="{http://v3.properties.wsapi.ean.com/}ItineraryQuery" minOccurs="0"/>
- *         &lt;element name="confirmationExtras" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
+ * Request for retrieving the Hotel Itinerary for a booking.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "HotelItineraryRequest", propOrder = {
-    "itineraryId",
-    "lastName",
-    "email",
-    "affiliateConfirmationId",
-    "affiliateCustomerId",
-    "itineraryQuery",
-    "confirmationExtras"
-})
-public class HotelItineraryRequest
-    extends HotelBaseRequest
-{
-
-    protected Long itineraryId;
-    protected String lastName;
-    protected String email;
-    protected String affiliateConfirmationId;
-    protected String affiliateCustomerId;
-    @XmlElement(name = "ItineraryQuery")
-    protected ItineraryQuery itineraryQuery;
-    protected List<String> confirmationExtras;
+public class HotelItineraryRequest extends HotelBaseRequest {
+    private Long itineraryId;
+    private String lastName;
+    private String email;
+    private String affiliateConfirmationId;
+    private String affiliateCustomerId;
+    private ItineraryQuery itineraryQuery;
+    private List<String> confirmationExtras;
 
     /**
-     * Gets the value of the itineraryId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
+     * Creates a HotelItineraryRequest.
+     * @param itineraryId Itinerary id.
+     * @param email Customer email address.
+     */
+    public HotelItineraryRequest(long itineraryId, String email) {
+        this.itineraryId = itineraryId;
+        this.email = email;
+    }
+
+    /**
+     * Creates a HotelItineraryRequest.
+     * @param affiliateConfirmationId affiliate confirmation id.
+     */
+    public HotelItineraryRequest(String affiliateConfirmationId) {
+        this.affiliateConfirmationId = affiliateConfirmationId;
+    }
+
+    /**
+     * Gets the ItineraryId.
+     * @return Itinerary Id.
      */
     public Long getItineraryId() {
         return itineraryId;
     }
 
     /**
-     * Sets the value of the itineraryId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Long }
-     *     
+     * Sets the ItineraryId.
+     * @param value Itinerary Id.
      */
     public void setItineraryId(Long value) {
         this.itineraryId = value;
     }
 
     /**
-     * Gets the value of the lastName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * Gets the Last Name.
+     * @return customer last night.
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * Sets the value of the lastName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * Sets the Last Name.
+     * @param value customer last night.
      */
     public void setLastName(String value) {
         this.lastName = value;
     }
 
     /**
-     * Gets the value of the email property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * Gets the email address.
+     * @return customer email address.
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Sets the value of the email property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * Sets the email address.
+     * @param value customer email address.
      */
     public void setEmail(String value) {
         this.email = value;
     }
 
     /**
-     * Gets the value of the affiliateConfirmationId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * Gets the Affiliate Confirmation Id.
+     * @return Affiliate Confirmation Id.
      */
     public String getAffiliateConfirmationId() {
         return affiliateConfirmationId;
     }
 
     /**
-     * Sets the value of the affiliateConfirmationId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * Sets the Affiliate Confirmation Id.
+     * @param value Affilaite Confirmation Id.
      */
     public void setAffiliateConfirmationId(String value) {
         this.affiliateConfirmationId = value;
     }
 
     /**
-     * Gets the value of the affiliateCustomerId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * Gets the Affiliate Customer Id.
+     * @return Affiliate Customer Id.
      */
     public String getAffiliateCustomerId() {
         return affiliateCustomerId;
     }
 
     /**
-     * Sets the value of the affiliateCustomerId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * Set the Affiliate Customer Id.
+     * @param value Affiliate Customer Id.
      */
     public void setAffiliateCustomerId(String value) {
         this.affiliateCustomerId = value;
     }
 
     /**
-     * Gets the value of the itineraryQuery property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ItineraryQuery }
-     *     
+     * Gets the Itinerary Query.
+     * @return Itinerary Query.
      */
     public ItineraryQuery getItineraryQuery() {
         return itineraryQuery;
     }
 
     /**
-     * Sets the value of the itineraryQuery property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ItineraryQuery }
-     *     
+     * Sets the Itinerary Query.
+     * @param value Itinerary Query.
      */
     public void setItineraryQuery(ItineraryQuery value) {
         this.itineraryQuery = value;
     }
 
     /**
-     * Gets the value of the confirmationExtras property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the confirmationExtras property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getConfirmationExtras().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
+     * Gets the Confirmation Extras.
+     * @return Confirmation Extras List, Creates a new List if one does not currently exist.
      */
     public List<String> getConfirmationExtras() {
         if (confirmationExtras == null) {

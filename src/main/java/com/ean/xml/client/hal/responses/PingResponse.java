@@ -2,9 +2,12 @@ package com.ean.xml.client.hal.responses;
 
 import com.ean.xml.client.hal.base.request.ServerInfo;
 
+/**
+ * Response object for testing the connection between the xml server and the affiliate server.
+ */
 public class PingResponse extends BaseResponse {
-    protected String echo;
-    protected ServerInfo serverInfo;
+    private String echo;
+    private ServerInfo serverInfo;
 
     /**
      * Gets the Echo test string.

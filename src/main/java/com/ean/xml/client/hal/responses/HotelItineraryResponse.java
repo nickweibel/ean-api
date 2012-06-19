@@ -1,4 +1,3 @@
-
 package com.ean.xml.client.hal.responses;
 
 import com.ean.xml.client.hal.base.itinerary.Itinerary;
@@ -10,34 +9,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for HotelItineraryResponse complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="HotelItineraryResponse">
- *   &lt;complexContent>
- *     &lt;extension base="{http://v3.properties.wsapi.ean.com/}BaseResponse">
- *       &lt;sequence>
- *         &lt;element name="Itinerary" type="{http://v3.properties.wsapi.ean.com/}Itinerary" maxOccurs="unbounded" minOccurs="0"/>
- *       &lt;/sequence>
- *       &lt;attribute name="size" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "HotelItineraryResponse", propOrder = {
-    "itinerary"
-})
-public class HotelItineraryResponse
-    extends BaseResponse
-{
+public class HotelItineraryResponse extends BaseResponse {
 
     @XmlElement(name = "Itinerary")
     protected List<Itinerary> itinerary;

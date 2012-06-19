@@ -1,18 +1,23 @@
 package com.ean.xml.client.hal.translator;
 
+import com.ean.xml.client.hal.requests.BaseRequest;
 import com.ean.xml.client.hal.requests.HotelRoomAvailabilityRequest;
 import com.ean.xml.client.hal.responses.HotelRoomAvailabilityResponse;
 import com.ean.xml.client.hal.util.EanElement;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 
-public class HotelRoomAvailabilityTranslator implements Translator
-        <HotelRoomAvailabilityRequest, Document, HotelRoomAvailabilityResponse> {
+/**
+ * Translator used to transform requests to xml documents and xml documents to responses.
+ */
+public class HotelRoomAvailabilityTranslator implements Translator {
     @Override
-    public Document createRequestDocument(HotelRoomAvailabilityRequest request) {
-        if (request == null) {
+    public Document createRequestDocument(BaseRequest baseRequest) {
+        if (baseRequest == null) {
             return null;
         }
+
+        HotelRoomAvailabilityRequest request = (HotelRoomAvailabilityRequest) baseRequest;
 
         Document document = DocumentHelper.createDocument();
         EanElement root = (EanElement) document.addElement("HotelRoomAvailabilityRequest");

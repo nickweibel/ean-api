@@ -1,6 +1,6 @@
 package com.ean.xml.client.hal.translator;
 
-import com.ean.xml.client.hal.requests.PingRequest;
+import com.ean.xml.client.hal.requests.BaseRequest;
 import com.ean.xml.client.hal.responses.PingResponse;
 import com.ean.xml.client.hal.util.EanElement;
 import org.dom4j.Document;
@@ -9,9 +9,9 @@ import org.dom4j.DocumentHelper;
 /**
  * Translator used to transform requests to xml documents and xml documents to responses.
  */
-public class PingTranslator implements Translator<PingRequest, Document, PingResponse> {
+public class PingTranslator implements Translator {
     @Override
-    public Document createRequestDocument(PingRequest request) {
+    public Document createRequestDocument(BaseRequest request) {
         if (request == null) {
             return null;
         }
