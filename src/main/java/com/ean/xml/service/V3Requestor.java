@@ -75,9 +75,10 @@ public class V3Requestor {
         try {
             url = URIUtils.createURI("http",
                     properties.getProperty("eanApi.host"),
-                    Integer.getInteger(properties.getProperty("eanApi.port", "-1")),
+                    Integer.valueOf(properties.getProperty("eanApi.port", "-1")),
                     path,
-                    URLEncoder.encode(getParams() + requestDocument.getXMLEncoding(), "UTF-8"),
+                    getParams() + URLEncoder.encode(requestDocument.getRootElement().asXML(), "UTF-8"),
+
                     null);
         } catch (UnsupportedEncodingException ex) {
             logger.logException(ex);
@@ -98,7 +99,7 @@ public class V3Requestor {
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
                 StringBuilder builder = new StringBuilder(
-                        Integer.getInteger(response.getHeaders("Content-Length")[0].getValue()));
+                        Integer.valueOf(response.getHeaders("Content-Length")[0].getValue()));
                 String line = "";
                 while ((line = reader.readLine()) != null) {
                     builder.append(line);
@@ -138,7 +139,7 @@ public class V3Requestor {
         if (baseRequest instanceof HotelRoomAvailabilityRequest) {
             translator = new HotelRoomAvailabilityTranslator();
             requestType = RequestType.AVAIL;
-            path = "avail";
+            path = "ean-services/rs/hotel/v3/avail";
         }
     }
 

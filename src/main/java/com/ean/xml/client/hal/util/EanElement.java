@@ -214,10 +214,10 @@ public class EanElement extends DefaultElement {
             Element container = DocumentHelper.createElement("RoomGroup");
 
             for (Room room : roomGroup.getRoom()) {
-                EanElement element = (EanElement) container.addElement("Room");
-                element.addElementInteger("numberOfAdults", room.getNumberOfAdults());
-                element.addElementInteger("numberOfChildren", room.getNumberOfChildren());
-                element.addElementString("childAges", StringUtils.join(room.getChildAges(), ","));
+                Element element = container.addElement("Room");
+                element.addElement("numberOfAdults").setText(String.valueOf(room.getNumberOfAdults()));
+                element.addElement("numberOfChildren").setText(String.valueOf(room.getNumberOfChildren()));
+                element.addElement("childAges").setText(StringUtils.join(room.getChildAges(), ","));
             }
 
             addElement(container);

@@ -10,6 +10,7 @@ package com.ean.xml.service;
 import com.ean.xml.client.hal.base.room.RoomGroup;
 import com.ean.xml.client.hal.requests.HotelRoomAvailabilityRequest;
 import com.ean.xml.client.hal.responses.HotelRoomAvailabilityResponse;
+import junit.framework.Assert;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -22,7 +23,8 @@ public class HotelRoomAvailTest {
 
         V3Requestor requestor = new V3Requestor(roomAvailabilityRequest);
         HotelRoomAvailabilityResponse response = (HotelRoomAvailabilityResponse) requestor.executeGet();
-        response.getCustomerSessionId();
+        Assert.assertNotNull(response.getCustomerSessionId());
+        Assert.assertTrue(response.getCustomerSessionId().length() > 0);
 
     }
 }
